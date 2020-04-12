@@ -1,0 +1,1 @@
+# genericsl_django
