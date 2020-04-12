@@ -8,8 +8,6 @@ from django.contrib import admin
 urlpatterns = [
     # Django Admin
     path(settings.ADMIN_URL, admin.site.urls),
-
-    path('api/', include(('genericsl_django.api.urls', 'api'), namespace='apis')),
     path('', include(('genericsl_django.users.urls', 'users'), namespace='users')),
     path('', include(('genericsl_django.sales.urls', 'sales'), namespace='sales'))
 
