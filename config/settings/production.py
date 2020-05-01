@@ -84,7 +84,6 @@ ANYMAIL = {
 INSTALLED_APPS += ['gunicorn']  # noqa F405
 
 # Cors
-INSTALLED_APPS += ['corsheaders']
 CORS_ORIGIN_ALLOW_ALL = True
 # WhiteNoise
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
