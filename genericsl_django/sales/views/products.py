@@ -10,6 +10,9 @@ from rest_framework.response import Response
 #serializers
 from genericsl_django.sales.serializers import ProductModelSerializer
 
+#filters
+from django_filters.rest_framework import DjangoFilterBackend
+
 #models
 from genericsl_django.sales.models import Product
 from genericsl_django.users.models import User
@@ -25,9 +28,12 @@ class ProductViewSet(
     """ 
         Handle crud for products 
     """
-
-    queryset = Product.objects.all()
+    
+    queryset = Product.objects.filter(is_active=True)
     serializer_class = ProductModelSerializer
+
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['name', 'price', 'supplier']
 
     # def dispatch(self, request, *args, **kwargs):
     #     """ verify user exist """
@@ -36,6 +42,7 @@ class ProductViewSet(
     #     username = kwargs['username']
     #     self.user = get_object_or_404(User, username=username)
     #     return super(ProductViewSet, self).dispatch(request, *args, **kwargs)
+    
 
     def dispatch(self, request, *args, **kwargs):
         print('::::::: PRODUCT MODEL SERIALIZER :::::::')
@@ -54,4 +61,6 @@ class ProductViewSet(
             status=status.HTTP_200_OK
         )
         
+
+
 

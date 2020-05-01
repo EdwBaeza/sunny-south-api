@@ -18,6 +18,7 @@ from genericsl_django.sales.models import Product
 class ProductModelSerializer(serializers.ModelSerializer):
     """ Product Model Serializer"""
     #product_category = serializers.StringRelatedField()
+    product_category = serializers.StringRelatedField()
     #picture = serializers.ImageField(required=None)
     class Meta:
         model = Product

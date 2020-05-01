@@ -64,7 +64,7 @@ TEMPLATES[0]['OPTIONS']['loaders'] = [  # noqa F405
 # Email
 DEFAULT_FROM_EMAIL = env(
     'DJANGO_DEFAULT_FROM_EMAIL',
-    default='genericsl_django <noreply@genericsl_django.com>'
+    default='genericsl_django <edwinbaeza05@gmail.com>'
 )
 SERVER_EMAIL = env('DJANGO_SERVER_EMAIL', default=DEFAULT_FROM_EMAIL)
 EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[genericsl_django]')
@@ -83,6 +83,9 @@ ANYMAIL = {
 # Gunicorn
 INSTALLED_APPS += ['gunicorn']  # noqa F405
 
+# Cors
+INSTALLED_APPS += ['corsheaders']
+CORS_ORIGIN_ALLOW_ALL = True
 # WhiteNoise
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')  # noqa F405
 
