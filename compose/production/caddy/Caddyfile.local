@@ -1,0 +1,29 @@
+
+{$DOMAIN_NAME} {
+    proxy / django:5000 {
+        header_upstream Host {host}
+        header_upstream X-Real-IP {remote}
+        header_upstream X-Forwarded-Proto {scheme}
+        header_upstream X-CSRFToken {~csrftoken}
+    }
+tls /etc/ssl/linuxito.crt /etc/ssl/linuxito.key
+    log stdout
+    errors stdout
+    gzip
+}
+
+
+
+https://ec2-54-187-153-186.us-west-2.compute.amazonaws.com {
+    proxy / django:5000 {
+        header_upstream Host {host}
+        header_upstream X-Real-IP {remote}
+        header_upstream X-Forwarded-Proto {scheme}
+        header_upstream X-CSRFToken {~csrftoken}
+    }
+tls /etc/ssl/linuxito.crt /etc/ssl/linuxito.key
+    log stdout
+    errors stdout
+    gzip
+
+}
