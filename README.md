@@ -1,1 +1,4 @@
-# genericsl_django
+# SunnySouthApp
+
+by SunnySouthTech
+
