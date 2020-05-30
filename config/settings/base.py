@@ -3,7 +3,7 @@
 import environ
 
 ROOT_DIR = environ.Path(__file__) - 3
-APPS_DIR = ROOT_DIR.path('genericsl_django')
+APPS_DIR = ROOT_DIR.path('sunnysouth')
 
 env = environ.Env()
 
@@ -50,8 +50,8 @@ THIRD_PARTY_APPS = [
     'corsheaders',
 ]
 LOCAL_APPS = [
-    'genericsl_django.users.apps.UsersAppConfig',
-    'genericsl_django.sales.apps.SalesAppConfig'
+    'sunnysouth.users.apps.UsersAppConfig',
+    'sunnysouth.sales.apps.SalesAppConfig'
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -149,7 +149,7 @@ ADMINS = [
 MANAGERS = ADMINS
 
 # Celery
-INSTALLED_APPS += ['genericsl_django.taskapp.celery.CeleryAppConfig']
+INSTALLED_APPS += ['sunnysouth.taskapp.celery.CeleryAppConfig']
 if USE_TZ:
     CELERY_TIMEZONE = TIME_ZONE
 CELERY_BROKER_URL = env('CELERY_BROKER_URL')

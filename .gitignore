@@ -268,7 +268,7 @@ tags
 
 ### Project template
 
-genericsl_django/media/
+sunnysouth/media/
 
 .pytest_cache/
 
@@ -278,4 +278,5 @@ genericsl_django/media/
 .envs/*
 !.envs/.local/
 
-circles.csv
+#editors
+.vscode/*

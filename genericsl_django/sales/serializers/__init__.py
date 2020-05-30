@@ -1,2 +1,0 @@
-from .products import ProductModelSerializer
-from .product_category import ProductCategoryModelSerializer
