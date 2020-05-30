@@ -26,8 +26,8 @@ if __name__ == "__main__":
         raise
 
     # This allows easy placement of apps within the interior
-    # genericsl_django directory.
+    # sunnysouth directory.
     current_path = os.path.dirname(os.path.abspath(__file__))
-    sys.path.append(os.path.join(current_path, "genericsl_django"))
+    sys.path.append(os.path.join(current_path, "sunnysouth"))
 
     execute_from_command_line(sys.argv)

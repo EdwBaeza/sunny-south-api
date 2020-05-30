@@ -5,4 +5,4 @@ set -o pipefail
 set -o nounset
 
 
-celery -A genericsl_django.taskapp beat -l INFO
+celery -A sunnysouth.taskapp beat -l INFO

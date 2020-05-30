@@ -1,3 +1,6 @@
+www.{$DOMAIN_NAME} {
+    redir https://{$DOMAIN_NAME}
+}
 
 {$DOMAIN_NAME} {
     proxy / django:5000 {
@@ -10,5 +13,3 @@
     errors stdout
     gzip
 }
-
-
