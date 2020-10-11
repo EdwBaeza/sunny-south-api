@@ -1,4 +1,4 @@
-""" views products"""
+""" views products. """
 
 #django rest_framework
 from rest_framework import mixins, status, viewsets
@@ -18,72 +18,61 @@ from sunnysouth.sales.models import Product
 from sunnysouth.users.models import User
 
 class ProductViewSet(
-                    mixins.CreateModelMixin,
-                    mixins.RetrieveModelMixin,
-                    mixins.ListModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.DestroyModelMixin,
-                    viewsets.GenericViewSet
-                    ):
-    """ 
-        Handle crud for products 
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet
+    ):
     """
-    
-    queryset = Product.objects.filter(is_active=True)
-    #serializer_class = ProductModelSerializer
+        Handle crud for products
+    """
+
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['name', 'price', 'supplier']
 
-    # def dispatch(self, request, *args, **kwargs):
-    #     """ verify user exist """
-    #     print('::::: DISPATCH ::::::')
-    #     print(kwargs)
-    #     username = kwargs['username']
-    #     self.user = get_object_or_404(User, username=username)
-    #     return super(ProductViewSet, self).dispatch(request, *args, **kwargs)
-    
 
-    # def dispatch(self, request, *args, **kwargs):
-    #     print('::::::: PRODUCT MODEL SERIALIZER :::::::')
-    #     #print(request.__dict__)
-    #     print(request.user)
-    #     print(self.request.user)
-    #     print(self.request.auth)
-    #     print('::::::: FIN ::::::: ')
-    #     return super(ProductViewSet, self).dispatch(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        """Verify that the user exists, active and verified."""
+        username = kwargs['username']
+        self.user = get_object_or_404(User, username=username)
+        return super(ProductViewSet, self).dispatch(request, *args, **kwargs)
+
     def get_serializer_class(self):
-        if self.action == 'list':
+        """ Get the serializer class depends on the action."""
+        if self.action in ['list', 'supplier']:
             return ProductListSerializer
         else:
             return ProductModelSerializer
 
-    def list(self, request,*args, **kwargs):
-        print('List Method Products')
-        print(request.user)
-        print(request.auth)
-        print()
+    def get_queryset(self):
+        """Get queryset for products."""
+        if self.action == "supplier":
+            return Product.objects.filter(
+                supplier__user__username=self.kwargs['pk'],
+                supplier__user__is_verified=True,
+            )
+        else:
+            return Product.objects.filter(is_active=True)
+
+    def list(self, request, *args, **kwargs):
         return super(ProductViewSet, self).list(request, *args, **kwargs)
-    
+
     def create(self, request, *args, **kwargs):
-        print('Create Method Products')
+        """ create product. """
         request.data['supplier'] = request.user.id
-        print('User')
-        print(request.data)
-        print(request.user.id)
-        #profile = self 
         return super(ProductViewSet, self).create(request, *args, **kwargs)
+
+    # def perfom_create(self, serializer);
+    #     """ Assign current user as provider."""
+
 
     @action(detail=True, methods=['GET'])
     def supplier(self, request, *args, **kwargs):
-        print('::::::: PRODUCT MODEL SERIALIZER :::::::')
-        print(request.data)
-        print(request.user.pk)
-        print('::::::: FIN ::::::: ')
-        return Response(self.get_serializer(
-            self.queryset, many=True).data,
-            status=status.HTTP_200_OK
-        )
+        """ Get products by supplier"""
+        return self.list(request, *args, **kwargs)
 
 
 

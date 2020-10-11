@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.postgres.fields import JSONField
 #models
 from sunnysouth.users.models import Profile
-#utitlities 
+#utitlities
 from sunnysouth.utils.models import BaseModel
 
 
@@ -17,7 +17,7 @@ class Sale(BaseModel):
         CANCELED = 'canceled'
         FINISHED = 'finished'
 
-        
+
     code = models.CharField(max_length=60)
     amount = models.FloatField()
     location = JSONField(null=True)
@@ -34,4 +34,8 @@ class Sale(BaseModel):
     supplier_raking = models.FloatField(default=5.0, null=True)
 
     client = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    supplier = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='supplier')
+    supplier = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name='supplier'
+    )

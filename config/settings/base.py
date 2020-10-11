@@ -11,7 +11,7 @@ env = environ.Env()
 DEBUG = env.bool('DJANGO_DEBUG', False)
 
 # Language and timezone
-TIME_ZONE = 'Europe/Madrid'
+TIME_ZONE = 'America/Mexico_City'
 LANGUAGE_CODE = 'es'
 SITE_ID = 1
 USE_I18N = True
@@ -170,6 +170,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 3,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }

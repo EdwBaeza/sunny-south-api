@@ -7,11 +7,16 @@ from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
 # Views
-from .views import users as user_views
+from .views.users import UserViewSet
+from sunnysouth.sales.views import ProductViewSet
 
 router = DefaultRouter()
-router.register(r'users', user_views.UserViewSet, basename='users')
-
+router.register(r'users', UserViewSet, basename='users')
+router.register(
+    r'users/(?P<username>[a-zA-Z0-9_-]+/products)',
+    ProductViewSet,
+    basename='users'
+)
 urlpatterns = [
     path('', include(router.urls))
 ]

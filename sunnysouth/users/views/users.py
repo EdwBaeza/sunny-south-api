@@ -8,7 +8,7 @@ from rest_framework.response import Response
 # Permissions
 from rest_framework.permissions import (
     AllowAny,
-    IsAuthenticated
+    IsAuthenticated,
 )
 from sunnysouth.users.permissions import IsAccountOwner
 
@@ -26,14 +26,14 @@ from sunnysouth.sales.models import Product
 
 class UserViewSet(mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
-                  mixins.ListModelMixin,
+                  #mixins.ListModelMixin,
                   viewsets.GenericViewSet):
     """User view set.
 
     Handle sign up, login and account verification.
     """
 
-    queryset = User.objects.filter(is_active=True)
+    queryset = User.objects.filter(is_active=True, is_verified=True)
     serializer_class = UserModelSerializer
     lookup_field = 'username'
 
@@ -41,7 +41,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         """Assign permissions based on action."""
         if self.action in ['signup', 'login', 'verify']:
             permissions = [AllowAny]
-        elif self.action in ['retrieve', 'update', 'partial_update']:
+        elif self.action in ['update', 'partial_update']:
             permissions = [IsAuthenticated, IsAccountOwner]
         else:
             permissions = [IsAuthenticated]
@@ -76,16 +76,18 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer.save()
         data = {'message': 'Congratulation, verified account!'}
         return Response(data, status=status.HTTP_200_OK)
+    #@action(detail=False, methods=[''])
+    #def products
+    # def retrieve(self, request, *args, **kwargs):
+    #     """ add extra data with products """
+    #     print('::::: RETRIVE')
+    #     response = super(UserViewSet, self).retrieve(request, *args, **kwargs)
+    #     products = Product.objects.all()
 
-    def retrieve(self, request, *args, **kwargs):
-        """ add extra data with products """
-        print('::::: RETRIVE')
-        response = super(UserViewSet, self).retrieve(request, *args, **kwargs)
-        products = Product.objects.all()
+    #     data = {
+    #         'user': response.data,
+    #         'products': ProductModelSerializer(products, many=True).data
+    #     }
+    #     response.data = data
+    #     return response
 
-        data = {
-            'user': response.data,
-            'products': ProductModelSerializer(products, many=True).data
-        }
-        response.data = data
-        return response

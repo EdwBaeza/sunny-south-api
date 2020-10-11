@@ -31,12 +31,15 @@ class UserModelSerializer(serializers.ModelSerializer):
 
         model = User
         fields = (
+            'id',
             'username',
             'first_name',
             'last_name',
             'email',
             'phone_number',
-            'profile'
+            'profile',
+            'created',
+            'modified'
         )
 
 
@@ -86,8 +89,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
 class UserLoginSerializer(serializers.Serializer):
     """User login serializer.
-
-    Handle the login request data.
+        Handle the login request data.
     """
 
     email = serializers.EmailField()
