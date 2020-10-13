@@ -10,6 +10,6 @@ from sunnysouth.sales.models import ProductCategory
 from sunnysouth.sales.serializers import ProductCategoryModelSerializer
 
 class ProductCategoryViewSet(viewsets.ModelViewSet):
-    
+
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategoryModelSerializer

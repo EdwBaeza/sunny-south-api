@@ -16,6 +16,9 @@ from sunnysouth.users.models import (
     User,
 )
 
+# Serializers
+from sunnysouth.users.serializers.profiles import ProfileModelSerializer
+
 # Tasks
 from sunnysouth.taskapp.tasks import send_confirmation_email
 
@@ -25,19 +28,22 @@ import jwt
 
 class UserModelSerializer(serializers.ModelSerializer):
     """User model serializer."""
-
+    profile = ProfileModelSerializer(read_only=True)
     class Meta:
         """Meta class."""
 
         model = User
-        fields = (
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'phone_number',
-            'profile'
-        )
+        exclude = [
+            'id',
+            'is_active',
+            'password',
+            'is_staff',
+            'is_superuser',
+            'is_verified',
+            'groups',
+            'user_permissions'
+        ]
+        read_only_fields = ['username', 'email', 'uuid']
 
 
 class UserSignUpSerializer(serializers.Serializer):
@@ -86,8 +92,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
 class UserLoginSerializer(serializers.Serializer):
     """User login serializer.
-
-    Handle the login request data.
+        Handle the login request data.
     """
 
     email = serializers.EmailField()

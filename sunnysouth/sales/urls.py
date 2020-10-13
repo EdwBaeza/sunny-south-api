@@ -1,5 +1,4 @@
-""" Sales URLs""" 
-
+"""Sales URLs"""
 #django
 from django.urls import include, path
 
@@ -10,8 +9,16 @@ from rest_framework.routers import DefaultRouter
 from .views import ProductViewSet
 from .views import ProductCategoryViewSet
 router = DefaultRouter()
-router.register(r'products', ProductViewSet, basename='products')
-router.register(r'product_categories', ProductCategoryViewSet, basename='product_categories')
+router.register(
+    r'products',
+    ProductViewSet,
+    basename='products'
+)
+router.register(
+    r'product_categories',
+    ProductCategoryViewSet,
+    basename='product_categories'
+)
 urlpatterns = [
     path('', include(router.urls))
 ]

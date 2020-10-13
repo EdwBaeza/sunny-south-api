@@ -8,16 +8,17 @@ from rest_framework.response import Response
 # Permissions
 from rest_framework.permissions import (
     AllowAny,
-    IsAuthenticated
+    IsAuthenticated,
 )
-from sunnysouth.users.permissions import IsAccountOwner
+from sunnysouth.users.permissions import IsAccountOwner, IsSuperUser, IsSuperUserOrAccountOwner
 
 # Serializers
 from sunnysouth.users.serializers import (
     AccountVerificationSerializer,
     UserLoginSerializer,
     UserModelSerializer,
-    UserSignUpSerializer
+    UserSignUpSerializer,
+    ProfileModelSerializer
 )
 from sunnysouth.sales.serializers import ProductModelSerializer
 # Models
@@ -33,7 +34,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
     Handle sign up, login and account verification.
     """
 
-    queryset = User.objects.filter(is_active=True)
+    queryset = User.objects.filter(is_active=True, is_verified=True)
     serializer_class = UserModelSerializer
     lookup_field = 'username'
 
@@ -41,11 +42,27 @@ class UserViewSet(mixins.RetrieveModelMixin,
         """Assign permissions based on action."""
         if self.action in ['signup', 'login', 'verify']:
             permissions = [AllowAny]
-        elif self.action in ['retrieve', 'update', 'partial_update']:
-            permissions = [IsAuthenticated, IsAccountOwner]
+        elif self.action in ['update', 'partial_update', 'profile', 'destroy']:
+            permissions = [IsAuthenticated, IsSuperUserOrAccountOwner]
         else:
-            permissions = [IsAuthenticated]
+            permissions = [IsAuthenticated, IsSuperUser]
         return [p() for p in permissions]
+
+    @action(detail=True, methods=['put', 'patch'])
+    def profile(self, request, *args, **kwargs):
+        """Update profile data."""
+        user = self.get_object()
+        profile = user.profile
+        partial = request.method == 'PATCH'
+        serializer = ProfileModelSerializer(
+            profile,
+            data=request.data,
+            partial=partial
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        data = UserModelSerializer(user).data
+        return Response(data)
 
     @action(detail=False, methods=['post'])
     def login(self, request):
@@ -74,18 +91,5 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer = AccountVerificationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        data = {'message': 'Congratulation, verified account!'}
+        data = {'message': 'Cuenta Verificada!'}
         return Response(data, status=status.HTTP_200_OK)
-
-    def retrieve(self, request, *args, **kwargs):
-        """ add extra data with products """
-        print('::::: RETRIVE')
-        response = super(UserViewSet, self).retrieve(request, *args, **kwargs)
-        products = Product.objects.all()
-
-        data = {
-            'user': response.data,
-            'products': ProductModelSerializer(products, many=True).data
-        }
-        response.data = data
-        return response

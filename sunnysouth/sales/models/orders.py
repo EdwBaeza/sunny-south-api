@@ -13,4 +13,3 @@ class Order(BaseModel):
     product = models.ForeignKey('sales.product', on_delete=models.CASCADE)
     sale = models.ForeignKey('sales.sale', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
-    

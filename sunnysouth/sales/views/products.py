@@ -1,4 +1,4 @@
-""" views products"""
+""" views products. """
 
 #django rest_framework
 from rest_framework import mixins, status, viewsets
@@ -6,84 +6,101 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
+from rest_framework.filters import SearchFilter
 
 #serializers
-from sunnysouth.sales.serializers import ProductModelSerializer, ProductListSerializer
+from sunnysouth.sales.serializers import ProductModelSerializer, ProductListSerializer, ProductDetailSerializer
+from sunnysouth.sales.serializers.product_category import ProductCategoryModelSerializer
 
 #filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 #models
-from sunnysouth.sales.models import Product
+from sunnysouth.sales.models import Product, ProductCategory
 from sunnysouth.users.models import User
 
-class ProductViewSet(
-                    mixins.CreateModelMixin,
-                    mixins.RetrieveModelMixin,
-                    mixins.ListModelMixin,
-                    mixins.UpdateModelMixin,
-                    mixins.DestroyModelMixin,
-                    viewsets.GenericViewSet
-                    ):
-    """ 
-        Handle crud for products 
+#Permissions
+from sunnysouth.sales.permissions.products import IsValidCurrentUser
+
+class ProductUserViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet
+    ):
     """
-    
-    queryset = Product.objects.filter(is_active=True)
-    #serializer_class = ProductModelSerializer
-    permission_classes = [IsAuthenticated]
-    filter_backends = [DjangoFilterBackend]
+        Handle crud for products
+    """
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['name', 'price', 'supplier']
+    search_fields = ['product_category__name', 'product_category__uuid']
+    queryset = Product.objects.filter(is_active=True)
+    lookup_field = 'uuid'
 
-    # def dispatch(self, request, *args, **kwargs):
-    #     """ verify user exist """
-    #     print('::::: DISPATCH ::::::')
-    #     print(kwargs)
-    #     username = kwargs['username']
-    #     self.user = get_object_or_404(User, username=username)
-    #     return super(ProductViewSet, self).dispatch(request, *args, **kwargs)
-    
+    def dispatch(self, request, *args, **kwargs):
+        """Verify that the user exists, active and verified."""
+        username = kwargs['username']
+        self.user = get_object_or_404(
+            User,
+            username=username,
+            is_active=True,
+            is_verified=True
+        )
+        return super(ProductUserViewSet, self).dispatch(request, *args, **kwargs)
 
-    # def dispatch(self, request, *args, **kwargs):
-    #     print('::::::: PRODUCT MODEL SERIALIZER :::::::')
-    #     #print(request.__dict__)
-    #     print(request.user)
-    #     print(self.request.user)
-    #     print(self.request.auth)
-    #     print('::::::: FIN ::::::: ')
-    #     return super(ProductViewSet, self).dispatch(request, *args, **kwargs)
     def get_serializer_class(self):
-        if self.action == 'list':
+        """Get the serializer class depends on the action."""
+        if self.action in ['list']:
             return ProductListSerializer
+        elif self.action in ['retrieve']:
+            return ProductDetailSerializer
         else:
             return ProductModelSerializer
 
-    def list(self, request,*args, **kwargs):
-        print('List Method Products')
-        print(request.user)
-        print(request.auth)
-        print()
-        return super(ProductViewSet, self).list(request, *args, **kwargs)
-    
-    def create(self, request, *args, **kwargs):
-        print('Create Method Products')
-        request.data['supplier'] = request.user.id
-        print('User')
-        print(request.data)
-        print(request.user.id)
-        #profile = self 
-        return super(ProductViewSet, self).create(request, *args, **kwargs)
+    def get_permissions(self):
+        permissions = [IsAuthenticated]
+        if self.action in ['update', 'partial_update', 'create', 'destroy']:
+            permissions+= [IsValidCurrentUser]
+        return [p() for p in permissions ]
 
-    @action(detail=True, methods=['GET'])
-    def supplier(self, request, *args, **kwargs):
-        print('::::::: PRODUCT MODEL SERIALIZER :::::::')
-        print(request.data)
-        print(request.user.pk)
-        print('::::::: FIN ::::::: ')
-        return Response(self.get_serializer(
-            self.queryset, many=True).data,
-            status=status.HTTP_200_OK
-        )
+    def get_queryset(self):
+        """Get queryset for products."""
+        return Product.objects.filter(is_active=True, supplier=self.user.profile)
+
+    def get_serializer_context(self):
+        """Extra context provided to the serializer class."""
+        context = {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self
+        }
+
+        if self.action in ['create', 'update', 'partial_update']:
+            context['supplier'] = self.user.profile
+
+        return context
+
+class ProductViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet
+    ):
+    """
+        Handle crud for products
+    """
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['name', 'price', 'supplier']
+    search_fields = ['product_category__name', 'product_category__uuid']
+    queryset = Product.objects.filter(is_active=True)
+    lookup_field = 'uuid'
+    permission_classes = [IsAuthenticated]
 
 
-
+    def get_serializer_class(self):
+        """Get the serializer class depends on the action."""
+        if self.action in ['list']:
+            return ProductListSerializer
+        elif self.action in ['retrieve']:
+            return ProductDetailSerializer

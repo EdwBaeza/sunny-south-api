@@ -1,8 +1,12 @@
 """Django models utilities."""
 
+import uuid
+
 # Django
 from django.db import models
 
+def generate_uuid():
+    return str(uuid.uuid4()).replace('-', '')
 
 class BaseModel(models.Model):
     """Prject base model.
@@ -13,7 +17,12 @@ class BaseModel(models.Model):
         + created (DateTime): Store the datetime the object was created.
         + modified (DateTime): Store the last datetime the object was modified.
     """
-
+    uuid = models.CharField(
+        unique=True,
+        null=False,
+        max_length=300,
+        default=generate_uuid
+    )
     created = models.DateTimeField(
         'created at',
         auto_now_add=True,
