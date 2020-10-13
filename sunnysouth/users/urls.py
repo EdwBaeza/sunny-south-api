@@ -8,14 +8,14 @@ from rest_framework.routers import DefaultRouter
 
 # Views
 from .views.users import UserViewSet
-from sunnysouth.sales.views import ProductViewSet
+from sunnysouth.sales.views import ProductUserViewSet
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='users')
 router.register(
-    r'users/(?P<username>[a-zA-Z0-9_-]+/products)',
-    ProductViewSet,
-    basename='users'
+    r'users/(?P<username>[^/.]+)/products',
+    ProductUserViewSet,
+    basename='users-products'
 )
 urlpatterns = [
     path('', include(router.urls))

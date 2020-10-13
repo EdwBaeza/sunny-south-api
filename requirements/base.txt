@@ -31,4 +31,3 @@ django-redis==4.10.0
 celery>=4.3.0
 tornado>=4.2.0, <6.0.0
 flower==0.9.3
-

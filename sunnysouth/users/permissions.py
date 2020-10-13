@@ -3,6 +3,11 @@
 # Django REST Framework
 from rest_framework.permissions import BasePermission
 
+#Django
+from django.contrib.auth.models import User
+
+# Models
+from sunnysouth.users.models import User
 
 class IsAccountOwner(BasePermission):
     """Allow access only to objects owned by the requesting user."""
@@ -10,3 +15,20 @@ class IsAccountOwner(BasePermission):
     def has_object_permission(self, request, view, obj):
         """Check obj and user are the same."""
         return request.user == obj
+
+class IsSuperUser(BasePermission):
+
+    def has_permission(self, request, view):
+        """Allow access only if user is superuser."""
+        return request.user.is_superuser
+
+class IsSuperUserOrAccountOwner(BasePermission):
+
+    def has_permission(self, request, view):
+        """Allow access only if user is superuser."""
+        return request.user.is_superuser
+
+
+    def has_object_permission(self, request, view, obj):
+        """Check obj and user are the same."""
+        return request.user == obj or request.user.is_superuser

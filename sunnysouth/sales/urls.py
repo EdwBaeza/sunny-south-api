@@ -1,5 +1,4 @@
-""" Sales URLs"""
-
+"""Sales URLs"""
 #django
 from django.urls import include, path
 

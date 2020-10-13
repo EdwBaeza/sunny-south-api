@@ -1,2 +1,2 @@
-from .products import ProductModelSerializer, ProductListSerializer
+from .products import ProductModelSerializer, ProductListSerializer, ProductDetailSerializer
 from .product_category import ProductCategoryModelSerializer

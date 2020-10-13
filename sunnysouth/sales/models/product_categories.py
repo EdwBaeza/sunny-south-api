@@ -5,7 +5,6 @@ from django.db import models
 #utils
 from sunnysouth.utils.models import BaseModel
 
-
 class ProductCategory(BaseModel):
     """ ProductCategory Model"""
     name = models.CharField(max_length=100)

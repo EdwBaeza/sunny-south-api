@@ -6,18 +6,23 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
+from rest_framework.filters import SearchFilter
 
 #serializers
-from sunnysouth.sales.serializers import ProductModelSerializer, ProductListSerializer
+from sunnysouth.sales.serializers import ProductModelSerializer, ProductListSerializer, ProductDetailSerializer
+from sunnysouth.sales.serializers.product_category import ProductCategoryModelSerializer
 
 #filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 #models
-from sunnysouth.sales.models import Product
+from sunnysouth.sales.models import Product, ProductCategory
 from sunnysouth.users.models import User
 
-class ProductViewSet(
+#Permissions
+from sunnysouth.sales.permissions.products import IsValidCurrentUser
+
+class ProductUserViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
@@ -28,51 +33,74 @@ class ProductViewSet(
     """
         Handle crud for products
     """
-
-    permission_classes = [IsAuthenticated]
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['name', 'price', 'supplier']
-
+    search_fields = ['product_category__name', 'product_category__uuid']
+    queryset = Product.objects.filter(is_active=True)
+    lookup_field = 'uuid'
 
     def dispatch(self, request, *args, **kwargs):
         """Verify that the user exists, active and verified."""
         username = kwargs['username']
-        self.user = get_object_or_404(User, username=username)
-        return super(ProductViewSet, self).dispatch(request, *args, **kwargs)
+        self.user = get_object_or_404(
+            User,
+            username=username,
+            is_active=True,
+            is_verified=True
+        )
+        return super(ProductUserViewSet, self).dispatch(request, *args, **kwargs)
 
     def get_serializer_class(self):
-        """ Get the serializer class depends on the action."""
-        if self.action in ['list', 'supplier']:
+        """Get the serializer class depends on the action."""
+        if self.action in ['list']:
             return ProductListSerializer
+        elif self.action in ['retrieve']:
+            return ProductDetailSerializer
         else:
             return ProductModelSerializer
 
+    def get_permissions(self):
+        permissions = [IsAuthenticated]
+        if self.action in ['update', 'partial_update', 'create', 'destroy']:
+            permissions+= [IsValidCurrentUser]
+        return [p() for p in permissions ]
+
     def get_queryset(self):
         """Get queryset for products."""
-        if self.action == "supplier":
-            return Product.objects.filter(
-                supplier__user__username=self.kwargs['pk'],
-                supplier__user__is_verified=True,
-            )
-        else:
-            return Product.objects.filter(is_active=True)
+        return Product.objects.filter(is_active=True, supplier=self.user.profile)
 
-    def list(self, request, *args, **kwargs):
-        return super(ProductViewSet, self).list(request, *args, **kwargs)
+    def get_serializer_context(self):
+        """Extra context provided to the serializer class."""
+        context = {
+            'request': self.request,
+            'format': self.format_kwarg,
+            'view': self
+        }
 
-    def create(self, request, *args, **kwargs):
-        """ create product. """
-        request.data['supplier'] = request.user.id
-        return super(ProductViewSet, self).create(request, *args, **kwargs)
+        if self.action in ['create', 'update', 'partial_update']:
+            context['supplier'] = self.user.profile
 
-    # def perfom_create(self, serializer);
-    #     """ Assign current user as provider."""
+        return context
+
+class ProductViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet
+    ):
+    """
+        Handle crud for products
+    """
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['name', 'price', 'supplier']
+    search_fields = ['product_category__name', 'product_category__uuid']
+    queryset = Product.objects.filter(is_active=True)
+    lookup_field = 'uuid'
+    permission_classes = [IsAuthenticated]
 
 
-    @action(detail=True, methods=['GET'])
-    def supplier(self, request, *args, **kwargs):
-        """ Get products by supplier"""
-        return self.list(request, *args, **kwargs)
-
-
-
+    def get_serializer_class(self):
+        """Get the serializer class depends on the action."""
+        if self.action in ['list']:
+            return ProductListSerializer
+        elif self.action in ['retrieve']:
+            return ProductDetailSerializer
