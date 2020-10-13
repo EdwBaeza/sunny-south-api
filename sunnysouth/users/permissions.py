@@ -29,8 +29,6 @@ class IsSuperUserOrAccountOwner(BasePermission):
         obj = view.get_object()
         return self.has_object_permission(request, view, obj)
 
-
-
     def has_object_permission(self, request, view, obj):
         """Check obj and user are the same."""
         return request.user == obj or request.user.is_superuser

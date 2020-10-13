@@ -44,8 +44,10 @@ class UserViewSet(mixins.RetrieveModelMixin,
             permissions = [AllowAny]
         elif self.action in ['update', 'partial_update', 'profile', 'destroy']:
             permissions = [IsAuthenticated, IsSuperUserOrAccountOwner]
-        else:
+        elif self.action in ['list']:
             permissions = [IsAuthenticated, IsSuperUser]
+        else:
+            permissions = [IsAuthenticated]
         return [p() for p in permissions]
 
     @action(detail=True, methods=['put', 'patch'])
