@@ -26,7 +26,9 @@ class IsSuperUserOrAccountOwner(BasePermission):
 
     def has_permission(self, request, view):
         """Allow access only if user is superuser."""
-        return request.user.is_superuser
+        obj = view.get_object()
+        return self.has_object_permission(request, view, obj)
+
 
 
     def has_object_permission(self, request, view, obj):
