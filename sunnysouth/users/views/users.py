@@ -93,5 +93,5 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer = AccountVerificationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        data = {'message': 'Cuenta Verificada!'}
+        data = {'message': 'Cuenta verificada exitosamente'}
         return Response(data, status=status.HTTP_200_OK)
