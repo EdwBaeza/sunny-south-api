@@ -14,4 +14,4 @@ jobs:
     - name: build docker stack
       run: docker-compose -f local.yml build
     - name: Run Tests
-      run: docker-compose -f local.yml run --rm django python manage.py test sunnysouth/
+      run: docker-compose -f local.yml run --rm django pytest
