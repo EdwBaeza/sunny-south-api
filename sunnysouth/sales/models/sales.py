@@ -18,7 +18,6 @@ class Sale(BaseModel):
         CANCELED = 'canceled'
         FINISHED = 'finished'
 
-    code = models.CharField(max_length=60)
     amount = models.FloatField()
     location = models.JSONField(null=True)
     products = models.ManyToManyField('sales.product', through='sales.order')

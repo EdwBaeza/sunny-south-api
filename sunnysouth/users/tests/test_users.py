@@ -12,7 +12,7 @@ class UserAPITestCase(APITestCase):
     """ Users API test case. """
 
     def setUp(self):
-        self.url = '/users/'
+        self.url = '/api/v1/users/'
         self.data_base = {
             "email": "base@test.com",
             "username": "base",
@@ -28,7 +28,8 @@ class UserAPITestCase(APITestCase):
             "password": "123456.a",
             "password_confirmation": "123456.a",
             "first_name": "test",
-            "last_name": "test"
+            "last_name": "test",
+            "phone_number": "9994169041"
         }
         self.data_error = {
             "email": "test2@test.com",
@@ -43,8 +44,6 @@ class UserAPITestCase(APITestCase):
             "email":"base@test.com",
             "password": "123456.a"
         }
-        
-        
 
     def test_signup_response_success(self):
         """ Create new user and expected successful response. """
