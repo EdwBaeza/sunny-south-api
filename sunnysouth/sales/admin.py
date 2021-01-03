@@ -5,13 +5,13 @@ from django.contrib import admin
 
 #Models
 from sunnysouth.sales.models import(
-    ProductCategory,
+    Category,
     Product,
     Sale,
     Order
 )
 
-admin.site.register(ProductCategory)
+admin.site.register(Category)
 admin.site.register(Product)
 admin.site.register(Sale)
 admin.site.register(Order)

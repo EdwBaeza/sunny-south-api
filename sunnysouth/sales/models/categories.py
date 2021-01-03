@@ -5,8 +5,8 @@ from django.db import models
 #utils
 from sunnysouth.utils.models import BaseModel
 
-class ProductCategory(BaseModel):
-    """ ProductCategory Model"""
+class Category(BaseModel):
+    """ Category Model"""
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
 
@@ -14,5 +14,5 @@ class ProductCategory(BaseModel):
         return f'{self.name}'
 
     class Meta:
-        verbose_name = 'product_category'
-        verbose_name_plural = 'product_categories'
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'

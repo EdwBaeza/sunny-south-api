@@ -7,7 +7,7 @@ from rest_framework.routers import DefaultRouter
 
 #views
 from .views import ProductViewSet
-from .views import ProductCategoryViewSet
+from .views import CategoryViewSet
 router = DefaultRouter()
 router.register(
     r'products',
@@ -15,9 +15,9 @@ router.register(
     basename='products'
 )
 router.register(
-    r'product_categories',
-    ProductCategoryViewSet,
-    basename='product_categories'
+    r'categories',
+    CategoryViewSet,
+    basename='categories'
 )
 urlpatterns = [
     path('', include(router.urls))

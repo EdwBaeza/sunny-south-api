@@ -10,13 +10,13 @@ from rest_framework.filters import SearchFilter
 
 #serializers
 from sunnysouth.sales.serializers import ProductModelSerializer, ProductListSerializer, ProductDetailSerializer
-from sunnysouth.sales.serializers.product_category import ProductCategoryModelSerializer
+from sunnysouth.sales.serializers.categories import CategoryModelSerializer
 
 #filters
 from django_filters.rest_framework import DjangoFilterBackend
 
 #models
-from sunnysouth.sales.models import Product, ProductCategory
+from sunnysouth.sales.models import Product, Category
 from sunnysouth.users.models import User
 
 #Permissions
@@ -35,7 +35,7 @@ class ProductUserViewSet(
     """
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['name', 'price', 'supplier']
-    search_fields = ['product_category__name', 'product_category__uuid']
+    search_fields = ['category__name', 'category__uuid']
     queryset = Product.objects.filter(is_active=True)
     lookup_field = 'uuid'
 
@@ -92,7 +92,7 @@ class ProductViewSet(
     """
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['name', 'price', 'supplier']
-    search_fields = ['product_category__name', 'product_category__uuid']
+    search_fields = ['category__name', 'category__uuid']
     queryset = Product.objects.filter(is_active=True)
     lookup_field = 'uuid'
     permission_classes = [IsAuthenticated]

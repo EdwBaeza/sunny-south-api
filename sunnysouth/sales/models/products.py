@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 
 #models
 from sunnysouth.users.models import Profile
-from sunnysouth.sales.models import ProductCategory
+from sunnysouth.sales.models import Category
 
 #utitilties
 from sunnysouth.utils.models import BaseModel
@@ -43,7 +43,7 @@ class Product(BaseModel):
     home_service_enabled = models.BooleanField(default=True)
     is_service = models.BooleanField(default=False)
     supplier = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    product_category = models.ForeignKey(
-        ProductCategory,
+    category = models.ForeignKey(
+        Category,
         on_delete=models.CASCADE
     )

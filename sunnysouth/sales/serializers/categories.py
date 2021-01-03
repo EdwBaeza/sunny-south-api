@@ -4,12 +4,12 @@
 from rest_framework import serializers
 
 #models
-from sunnysouth.sales.models import ProductCategory
+from sunnysouth.sales.models import Category
 
 
-class ProductCategoryModelSerializer(serializers.ModelSerializer):
+class CategoryModelSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = ProductCategory
+        model = Category
         fields = '__all__'
         read_only_fields = ['uuid']
