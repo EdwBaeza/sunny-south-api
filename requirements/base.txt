@@ -15,6 +15,9 @@ djangorestframework==3.12.1
 django-filter==2.4.0
 django-cors-headers >= 3.0.2
 
+#OAUTH
+django-oauth-toolkit
+
 # JWT
 pyjwt==1.7.1
 
