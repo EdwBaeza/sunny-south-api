@@ -1,4 +1,4 @@
-FROM python:3.6-alpine
+FROM python:3.8-alpine
 
 ENV PYTHONUNBUFFERED 1
 
@@ -16,6 +16,8 @@ RUN apk update \
   && apk add postgresql-client
 
 # Requirements are installed here to ensure they will be cached.
+RUN python -m pip install --upgrade pip
+
 COPY ./requirements /requirements
 RUN pip install -r /requirements/local.txt
 

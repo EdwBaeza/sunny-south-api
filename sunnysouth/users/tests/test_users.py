@@ -13,7 +13,7 @@ class UserAPITestCase(APITestCase):
 
     def setUp(self):
         self.url = '/api/v1/users/'
-        self.data_base = {
+        self.user_attributes = {
             "email": "base@test.com",
             "username": "base",
             "password": "123456.a",
@@ -21,8 +21,8 @@ class UserAPITestCase(APITestCase):
             "last_name": "test",
             "is_verified": True
         }
-        User.objects.create_user(**self.data_base)
-        self.data = {
+        User.objects.create_user(**self.user_attributes)
+        self.other_user_attributes = {
             "email": "test@test.com",
             "username": "test",
             "password": "123456.a",
@@ -48,7 +48,7 @@ class UserAPITestCase(APITestCase):
     def test_signup_response_success(self):
         """ Create new user and expected successful response. """
         url = self.url + "signup/"
-        request = self.client.post(url, self.data)
+        request = self.client.post(url, self.other_user_attributes)
         self.assertEqual(request.status_code, status.HTTP_201_CREATED)
 
     def test_signup_response_error(self):
