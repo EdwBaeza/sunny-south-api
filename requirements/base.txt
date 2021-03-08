@@ -2,7 +2,7 @@
 pytz==2018.7
 python-slugify==1.2.6
 Pillow==7.1.0
-psycopg2==2.7.4 --no-binary psycopg2
+psycopg2==2.8.6 --no-binary psycopg2
 
 # Django
 django==3.1
@@ -31,3 +31,8 @@ django-redis==4.10.0
 celery>=4.3.0
 tornado>=4.2.0, <6.0.0
 flower==0.9.3
+
+# JWT Auth
+djangorestframework-simplejwt
+
+typed-ast==1.4.1
