@@ -10,17 +10,22 @@ from rest_framework.permissions import (
     AllowAny,
     IsAuthenticated,
 )
+
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.parsers import JSONParser
+
 from sunnysouth.users.permissions import IsAccountOwner, IsSuperUser, IsSuperUserOrAccountOwner
 
 # Serializers
 from sunnysouth.users.serializers import (
     AccountVerificationSerializer,
-    UserLoginSerializer,
     UserModelSerializer,
     UserSignUpSerializer,
-    ProfileModelSerializer
+    ProfileModelSerializer,
+    MyTokenObtainPairSerializer
 )
 from sunnysouth.sales.serializers import ProductModelSerializer
+
 # Models
 from sunnysouth.users.models import User
 from sunnysouth.sales.models import Product
@@ -65,17 +70,9 @@ class UserViewSet(mixins.RetrieveModelMixin,
         data = UserModelSerializer(user).data
         return Response(data)
 
-    @action(detail=False, methods=['post'])
-    def login(self, request):
-        """User sign in."""
-        serializer = UserLoginSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user, token = serializer.save()
-        data = {
-            'user': UserModelSerializer(user).data,
-            'access_token': token
-        }
-        return Response(data, status=status.HTTP_200_OK)
+    @action(detail=False, methods=['get'])
+    def me(self, request, *args, **kwargs):
+        return Response(UserModelSerializer(request.user).data)
 
     @action(detail=False, methods=['post'])
     def signup(self, request):
@@ -94,3 +91,8 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer.save()
         data = {'message': 'Cuenta verificada exitosamente'}
         return Response(data, status=status.HTTP_200_OK)
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    "Custom token serializer"
+    serializer_class = MyTokenObtainPairSerializer

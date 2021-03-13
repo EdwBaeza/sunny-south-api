@@ -9,10 +9,7 @@ DEBUG = True
 # Security
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='PB3aGvTmCkzaLGRAxDc3aMayKTPTDd5usT8gw4pCmKOk5AlJjh12pTrnNgQyOHCH')
 ALLOWED_HOSTS = [
-    "localhost",
-    "0.0.0.0",
-    "127.0.0.1",
-    "10.0.0.16",
+    '*',
 ]
 
 # Cache
@@ -37,4 +34,5 @@ INSTALLED_APPS += ['django_extensions']  # noqa F405
 # django CROS
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:4200", # angular
+    "https://0.0.0.0"
 ]
