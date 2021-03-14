@@ -12,7 +12,7 @@ class UserAPITestCase(APITestCase):
     """ Users API test case. """
 
     def setUp(self):
-        self.url = '/api/v1/users/'
+        self.url = '/api/v1/'
         self.user_attributes = {
             "email": "base@test.com",
             "username": "base",
@@ -29,7 +29,10 @@ class UserAPITestCase(APITestCase):
             "password_confirmation": "123456.a",
             "first_name": "test",
             "last_name": "test",
-            "phone_number": "9994169041"
+            "phone_number": "9994169041",
+            "profile": {
+                "biography": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+            }
         }
         self.data_error = {
             "email": "test2@test.com",
@@ -47,31 +50,31 @@ class UserAPITestCase(APITestCase):
 
     def test_signup_response_success(self):
         """ Create new user and expected successful response. """
-        url = self.url + "signup/"
-        request = self.client.post(url, self.other_user_attributes)
-        self.assertEqual(request.status_code, status.HTTP_201_CREATED)
+        url = self.url + "users/signup/"
+        response = self.client.post(url, self.other_user_attributes, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.json())
 
     def test_signup_response_error(self):
         """ Create new user without any field and expected error response. """
-        url = self.url + "signup/"
-        request = self.client.post(url, self.data_error)
-        self.assertEqual(request.status_code, status.HTTP_400_BAD_REQUEST)
+        url = self.url + "users/signup/"
+        response = self.client.post(url, self.data_error, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST, response.json())
 
     def test_verificate_account_response_error(self):
         """ Try to validate account with incorrect code and expected error response. """
-        url = self.url + "verify/"
-        request = self.client.post(url, self.data_error_code)
-        self.assertEqual(request.status_code, status.HTTP_400_BAD_REQUEST)
+        url = self.url + "users/verify/"
+        response = self.client.post(url, self.data_error_code, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST, response.json())
 
     def test_login_response_success(self):
         """ Try to login account and expected success responce. """
-        url = self.url + "login/"
-        request = self.client.post(url, self.data_login)
-        self.assertEqual(request.status_code, status.HTTP_200_OK)
+        url = self.url + "token/"
+        response = self.client.post(url, self.data_login, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
 
     def test_login_response_error(self):
         """ Try to login nonexistent account and expected error responce. """
-        url = self.url + "login/"
+        url = self.url + "token/"
         self.data_login["email"] = 'nonexistent@test.com'
-        request = self.client.post(url, self.data_login)
-        self.assertEqual(request.status_code, status.HTTP_400_BAD_REQUEST)
+        response = self.client.post(url, self.data_login, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED, response.json())

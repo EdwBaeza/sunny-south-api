@@ -33,6 +33,7 @@ class ProductUserViewSet(
     """
         Handle crud for products
     """
+    permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['name', 'price', 'supplier']
     search_fields = ['category__name', 'category__uuid']
@@ -95,7 +96,6 @@ class ProductViewSet(
     search_fields = ['category__name', 'category__uuid']
     queryset = Product.objects.filter(is_active=True)
     lookup_field = 'uuid'
-    permission_classes = [IsAuthenticated]
 
 
     def get_serializer_class(self):

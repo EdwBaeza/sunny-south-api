@@ -10,6 +10,9 @@ from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.validators import UniqueValidator
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+
 # Models
 from sunnysouth.users.models import (
     Profile,
@@ -28,7 +31,7 @@ import jwt
 
 class UserModelSerializer(serializers.ModelSerializer):
     """User model serializer."""
-    profile = ProfileModelSerializer(read_only=True)
+    profile = ProfileModelSerializer()
     class Meta:
         """Meta class."""
 
@@ -44,6 +47,17 @@ class UserModelSerializer(serializers.ModelSerializer):
             'user_permissions'
         ]
         read_only_fields = ['username', 'email', 'uuid']
+
+    def update(self, instance, data):
+        """Handle user and profile update."""
+        profile_data = data.pop('profile', {})
+        instance.__dict__.update(**data)
+        instance.profile.__dict__.update(**profile_data)
+
+        instance.save()
+        instance.profile.save()
+
+        return instance
 
 
 class UserSignUpSerializer(serializers.Serializer):
@@ -71,6 +85,7 @@ class UserSignUpSerializer(serializers.Serializer):
 
     phone_number = serializers.CharField(min_length=10, max_length=17)
 
+    profile = ProfileModelSerializer()
 
     def validate(self, data):
         """Verify passwords match."""
@@ -84,34 +99,27 @@ class UserSignUpSerializer(serializers.Serializer):
     def create(self, data):
         """Handle user and profile creation."""
         data.pop('password_confirmation')
+        profile = data.pop('profile')
+
         user = User.objects.create_user(**data, is_verified=False)
-        Profile.objects.create(user=user, is_supplier=False)
+        Profile.objects.create(user=user, is_supplier=False, **profile)
         send_confirmation_email.delay(user_pk=user.pk)
+
         return user
 
 
-class UserLoginSerializer(serializers.Serializer):
-    """User login serializer.
-        Handle the login request data.
-    """
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
-    email = serializers.EmailField()
-    password = serializers.CharField(min_length=8, max_length=64)
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        data['user'] = {
+            'email': self.user.email,
+            'username': self.user.username,
+            'first_name': self.user.first_name,
+            'last_name': self.user.last_name
+        }
 
-    def validate(self, data):
-        """Check credentials."""
-        user = authenticate(username=data['email'], password=data['password'])
-        if not user:
-            raise serializers.ValidationError('Invalid credentials')
-        if not user.is_verified:
-            raise serializers.ValidationError('Account is not active yet :(')
-        self.context['user'] = user
         return data
-
-    def create(self, data):
-        """Generate or retrieve new token."""
-        token, created = Token.objects.get_or_create(user=self.context['user'])
-        return self.context['user'], token.key
 
 
 class AccountVerificationSerializer(serializers.Serializer):

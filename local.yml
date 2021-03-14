@@ -9,6 +9,8 @@ services:
     build:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
+    stdin_open: true
+    tty: true
     image: sunnysouth_local_django
     depends_on:
       - postgres
