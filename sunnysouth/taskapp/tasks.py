@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 
 # Models
-from sunnysouth.users.models import User
+from sunnysouth.marketplace.models import User
 
 # Celery
 from celery.decorators import task, periodic_task
@@ -29,7 +29,6 @@ def gen_verification_token(user):
     token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
     return token.decode()
 
-
 @task(name='send_confirmation_email', max_retries=3)
 def send_confirmation_email(user_pk):
     """Send account verification link to given user."""
@@ -45,3 +44,6 @@ def send_confirmation_email(user_pk):
     msg.attach_alternative(content, "text/html")
     msg.send()
 
+@periodic_task(name='test_periodic', run_every=timedelta(seconds=20))
+def disable_finished_rides():
+    print('::::: RUN PERIODIC TASK :::::')

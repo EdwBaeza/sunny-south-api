@@ -5,6 +5,7 @@ ipdb==0.13.5
 
 # Tools
 django-extensions==2.1.4
+django-naomi
 
 # Testing
 mypy==0.812
