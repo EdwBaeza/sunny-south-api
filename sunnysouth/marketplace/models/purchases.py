@@ -16,22 +16,11 @@ class Purchase(BaseModel):
         PAID = 'paid'
 
     total_amount = models.FloatField()
-    location = models.JSONField(null=True)
+    address = models.JSONField()
     products = models.ManyToManyField('marketplace.Product', through='marketplace.PurchaseProduct')
     paid_at = models.DateTimeField(null=True)
     canceled_at = models.DateTimeField(null=True)
-    status = models.CharField(
-        max_length=20,
-        choices=PurchaseStatus.choices,
-        default=PurchaseStatus.PENDING,
-    )
-
+    status = models.CharField(max_length=100, choices=PurchaseStatus.choices, default=PurchaseStatus.PENDING)
     client_ranking = models.FloatField(default=5.0)
-    supplier_raking = models.FloatField(default=5.0)
-
+    manufacturer_ranking = models.FloatField(default=5.0)
     client = models.ForeignKey('marketplace.Profile', on_delete=models.CASCADE)
-    supplier = models.ForeignKey(
-        'marketplace.Profile',
-        on_delete=models.CASCADE,
-        related_name='supplier'
-    )

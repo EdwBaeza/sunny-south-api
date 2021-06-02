@@ -44,6 +44,6 @@ def send_confirmation_email(user_pk):
     msg.attach_alternative(content, "text/html")
     msg.send()
 
-@periodic_task(name='test_periodic', run_every=timedelta(seconds=20))
-def disable_finished_rides():
-    print('::::: RUN PERIODIC TASK :::::')
+# @periodic_task(name='test_periodic', run_every=timedelta(seconds=20))
+# def disable_finished_rides():
+#     print('::::: RUN PERIODIC TASK :::::')

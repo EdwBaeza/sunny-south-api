@@ -88,9 +88,6 @@ class ProductViewSet(
     mixins.ListModelMixin,
     viewsets.GenericViewSet
     ):
-    """
-        Handle crud for products
-    """
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['name', 'price', 'supplier']
     search_fields = ['category__name', 'category__uuid']

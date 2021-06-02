@@ -8,16 +8,8 @@ from sunnysouth.utils.models import BaseModel
 class Profile(BaseModel):
     """Profile Model."""
 
-    user = models.OneToOneField('marketplace.User', on_delete=models.CASCADE)
+    user = models.OneToOneField('marketplace.User', related_name='profile', on_delete=models.CASCADE)
     slug_name = models.CharField(max_length=300, null=True)
     biography = models.TextField(max_length=500, blank=True)
-    picture = models.ImageField(
-        'profile picture',
-        upload_to='users/pictures/',
-        blank=True,
-        null=True
-    )
-    reputation = models.FloatField(
-        default=5.0,
-        help_text="Buying or selling products or services."
-    )
+    is_active = models.BooleanField('active', default=True)
+    reputation = models.FloatField(default=5.0)

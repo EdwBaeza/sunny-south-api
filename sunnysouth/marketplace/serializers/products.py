@@ -22,13 +22,14 @@ class ProductModelSerializer(serializers.ModelSerializer):
     supplier = serializers.SerializerMethodField()
     category = serializers.CharField(max_length=300)
 
-    def get_supplier(self, obj):
-        return obj.supplier.user.username
 
     class Meta:
         model = Product
         exclude = ['id', 'is_active']
         read_only_fields = ['uuid', 'supplier']
+
+    def get_supplier(self, obj):
+        return obj.supplier.user.username
 
     def validate_category(self, data):
         try:

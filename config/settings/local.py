@@ -25,8 +25,8 @@ TEMPLATES[0]['OPTIONS']['debug'] = DEBUG  # NOQA
 
 # Email
 # EMAIL_BACKEND = "naomi.mail.backends.naomi.NaomiBackend"
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
 # EMAIL_FILE_PATH = "tmp/emails/"
+EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 
