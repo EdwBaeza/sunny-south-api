@@ -1,9 +1,7 @@
-"""Users serializers."""
-
 # Django
 from django.conf import settings
-from django.contrib.auth import password_validation, authenticate
-from django.core.validators import RegexValidator
+from django.contrib.auth import password_validation
+from django.db import transaction
 
 # Django REST Framework
 from rest_framework import serializers
@@ -21,6 +19,7 @@ from sunnysouth.marketplace.models import (
 
 # Serializers
 from sunnysouth.marketplace.serializers.profiles import ProfileModelSerializer
+from sunnysouth.suppliers.serializers.manufacturers import ManufacturerModelSerializer
 
 # Tasks
 from sunnysouth.taskapp.tasks import send_confirmation_email
@@ -30,7 +29,6 @@ import jwt
 
 
 class UserModelSerializer(serializers.ModelSerializer):
-    """User model serializer."""
     profile = ProfileModelSerializer()
     class Meta:
         """Meta class."""
@@ -49,7 +47,6 @@ class UserModelSerializer(serializers.ModelSerializer):
         read_only_fields = ['username', 'email', 'uuid']
 
     def update(self, instance, data):
-        """Handle user and profile update."""
         profile_data = data.pop('profile', {})
         instance.__dict__.update(**data)
         instance.profile.__dict__.update(**profile_data)
@@ -61,11 +58,6 @@ class UserModelSerializer(serializers.ModelSerializer):
 
 
 class UserSignUpSerializer(serializers.Serializer):
-    """User sign up serializer.
-
-    Handle sign up data validation and user/profile creation.
-    """
-
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
@@ -88,28 +80,25 @@ class UserSignUpSerializer(serializers.Serializer):
     profile = ProfileModelSerializer()
 
     def validate(self, data):
-        """Verify passwords match."""
-        passwd = data['password']
-        passwd_conf = data['password_confirmation']
-        if passwd != passwd_conf:
+        password = data['password']
+        password_confirmation = data['password_confirmation']
+        if password != password_confirmation:
             raise serializers.ValidationError("Passwords don't match.")
-        password_validation.validate_password(passwd)
+        password_validation.validate_password(password_confirmation)
         return data
 
     def create(self, data):
-        """Handle user and profile creation."""
         data.pop('password_confirmation')
-        profile = data.pop('profile')
+        profile_data = data.pop('profile')
 
         user = User.objects.create_user(**data, is_verified=False)
-        Profile.objects.create(user=user, **profile)
-        send_confirmation_email.delay(user_pk=user.pk)
+        Profile.objects.create(user=user, **profile_data)
+        transaction.on_commit(lambda: send_confirmation_email.delay(user_pk=user.pk))
 
         return user
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-
     def validate(self, attrs):
         data = super().validate(attrs)
         data['user'] = {
@@ -123,8 +112,6 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 
 class AccountVerificationSerializer(serializers.Serializer):
-    """Account verification serializer."""
-
     token = serializers.CharField()
 
     def validate_token(self, data):

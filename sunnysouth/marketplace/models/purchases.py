@@ -8,8 +8,6 @@ from sunnysouth.utils.models import BaseModel
 
 
 class Purchase(BaseModel):
-    """ Sales Class """
-
     class PurchaseStatus(models.TextChoices):
         PENDING = 'pending'
         CANCELED = 'canceled'

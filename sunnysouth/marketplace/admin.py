@@ -11,14 +11,15 @@ from sunnysouth.marketplace.models import(
     Purchase,
     PurchaseProduct,
     User,
-    Profile
+    Profile,
+    Manufacturer
 )
 
 
 class CustomUserAdmin(UserAdmin):
     """User model admin."""
 
-    list_display = ('email', 'username', 'first_name', 'last_name', 'is_staff', 'is_verified')
+    list_display = ('email', 'username', 'first_name', 'last_name', 'is_staff', 'is_verified', 'password')
     list_filter = ('is_staff', 'created', 'modified')
 
 
@@ -29,3 +30,4 @@ admin.site.register(Category)
 admin.site.register(Product)
 admin.site.register(Purchase)
 admin.site.register(PurchaseProduct)
+admin.site.register(Manufacturer)

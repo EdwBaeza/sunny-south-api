@@ -1,4 +1,3 @@
-""" Products serializers."""
 import pprint
 # Django
 from django.conf import settings
@@ -17,8 +16,6 @@ from sunnysouth.marketplace.models.categories import Category
 
 
 class ProductModelSerializer(serializers.ModelSerializer):
-    """ Product Model Serializer Create, Update and Delete """
-
     supplier = serializers.SerializerMethodField()
     category = serializers.CharField(max_length=300)
 
@@ -52,8 +49,6 @@ class ProductModelSerializer(serializers.ModelSerializer):
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
-    """ Product Model Serializer Create, Update and Delete """
-
     supplier = serializers.SerializerMethodField()
     category = CategoryModelSerializer()
 
@@ -67,7 +62,6 @@ class ProductDetailSerializer(serializers.ModelSerializer):
 
 
 class ProductListSerializer(serializers.ModelSerializer):
-    """ Product Serializer when the request is list """
     category = serializers.SlugRelatedField(
          many=False,
          read_only=True,

@@ -4,17 +4,14 @@
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
-# Permissions
 from rest_framework.permissions import (
     AllowAny,
     IsAuthenticated,
 )
-
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework.parsers import JSONParser
 
-from sunnysouth.marketplace.permissions.users import IsSuperUser, IsSuperUserOrAccountOwner
+# Custom permissions
+from sunnysouth.marketplace.permissions.users import IsSuperUser, IsAccountOwner
 
 # Serializers
 from sunnysouth.marketplace.serializers import (
@@ -34,23 +31,17 @@ class UserViewSet(mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,
                   mixins.ListModelMixin,
                   viewsets.GenericViewSet):
-    """User view set.
-
-    Handle sign up, login and account verification.
-    """
-
     queryset = User.objects.filter(is_active=True, is_verified=True)
     serializer_class = UserModelSerializer
     lookup_field = 'username'
 
     def get_permissions(self):
-        """Assign permissions based on action."""
         if self.action in ['signup', 'login', 'verify']:
             permissions = [AllowAny]
         elif self.action in ['update', 'partial_update', 'profile', 'destroy']:
-            permissions = [IsAuthenticated, IsSuperUserOrAccountOwner]
+            permissions = [IsAuthenticated, IsAccountOwner]
         elif self.action in ['list']:
-            permissions = [IsAuthenticated, IsSuperUser]
+            permissions = [IsAuthenticated, IsSuperUser, IsAccountOwner]
         else:
             permissions = [IsAuthenticated]
         return [p() for p in permissions]
@@ -76,7 +67,6 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
     @action(detail=False, methods=['post'])
     def signup(self, request):
-        """User sign up."""
         serializer = UserSignUpSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
@@ -85,7 +75,6 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
     @action(detail=False, methods=['post'])
     def verify(self, request):
-        """Account verification."""
         serializer = AccountVerificationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -94,5 +83,4 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
-    "Custom token serializer"
     serializer_class = MyTokenObtainPairSerializer

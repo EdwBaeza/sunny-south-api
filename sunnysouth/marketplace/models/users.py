@@ -39,9 +39,7 @@ class User(BaseModel, AbstractUser):
     phone_number = models.CharField(validators=[phone_regex], max_length=15, blank=True)
 
     def __str__(self):
-        """Return username."""
-        return self.username
+        return self.email
 
     def get_short_name(self):
-        """Return username."""
         return self.username

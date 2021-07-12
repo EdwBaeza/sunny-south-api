@@ -32,6 +32,10 @@ def gen_verification_token(user):
 @task(name='send_confirmation_email', max_retries=3)
 def send_confirmation_email(user_pk):
     """Send account verification link to given user."""
+    print('::::::::  send_confirmation_email ::::::::')
+    print(user_pk)
+    print([(us.id, us.email, us.created,) for us in  User.objects.all()])
+    print('::::::::  END ::::::::')
     user = User.objects.get(pk=user_pk)
     verification_token = gen_verification_token(user)
     subject = 'Welcome @{}! Verify your account to start using SunnySouth'.format(user.username)

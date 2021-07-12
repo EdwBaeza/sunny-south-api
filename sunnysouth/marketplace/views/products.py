@@ -1,5 +1,3 @@
-""" views products. """
-
 #django rest_framework
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
@@ -30,9 +28,6 @@ class ProductUserViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet
     ):
-    """
-        Handle crud for products
-    """
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['name', 'price', 'supplier']
@@ -41,7 +36,6 @@ class ProductUserViewSet(
     lookup_field = 'uuid'
 
     def dispatch(self, request, *args, **kwargs):
-        """Verify that the user exists, active and verified."""
         username = kwargs['username']
         self.user = get_object_or_404(
             User,
@@ -52,7 +46,6 @@ class ProductUserViewSet(
         return super(ProductUserViewSet, self).dispatch(request, *args, **kwargs)
 
     def get_serializer_class(self):
-        """Get the serializer class depends on the action."""
         if self.action in ['list']:
             return ProductListSerializer
         elif self.action in ['retrieve']:
@@ -67,11 +60,9 @@ class ProductUserViewSet(
         return [p() for p in permissions ]
 
     def get_queryset(self):
-        """Get queryset for products."""
-        return Product.objects.filter(is_active=True, supplier=self.user.profile)
+        return Product.objects.filter(is_active=True, supplier=self.user.manufacturer)
 
     def get_serializer_context(self):
-        """Extra context provided to the serializer class."""
         context = {
             'request': self.request,
             'format': self.format_kwarg,

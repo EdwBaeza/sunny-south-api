@@ -1,0 +1,1 @@
+from .manufacturers import ManufacturerViewSet
