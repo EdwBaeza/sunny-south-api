@@ -21,7 +21,7 @@ from sunnysouth.marketplace.serializers import (
     ProfileModelSerializer,
     MyTokenObtainPairSerializer
 )
-from sunnysouth.marketplace.serializers import ProductModelSerializer
+from sunnysouth.suppliers.serializers import UserModelSerializer as UserManufacturerModelSerializer
 
 # Models
 from sunnysouth.marketplace.models import User
@@ -32,7 +32,6 @@ class UserViewSet(mixins.RetrieveModelMixin,
                   mixins.ListModelMixin,
                   viewsets.GenericViewSet):
     queryset = User.objects.filter(is_active=True, is_verified=True)
-    serializer_class = UserModelSerializer
     lookup_field = 'username'
 
     def get_permissions(self):
@@ -58,8 +57,8 @@ class UserViewSet(mixins.RetrieveModelMixin,
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        data = UserModelSerializer(user).data
-        return Response(data)
+
+        return Response(UserModelSerializer(user).data)
 
     @action(detail=False, methods=['get'])
     def me(self, request, *args, **kwargs):
@@ -71,6 +70,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         data = UserModelSerializer(user).data
+
         return Response(data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['post'])
@@ -79,6 +79,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer.is_valid(raise_exception=True)
         serializer.save()
         data = {'message': 'Cuenta verificada exitosamente'}
+
         return Response(data, status=status.HTTP_200_OK)
 
 

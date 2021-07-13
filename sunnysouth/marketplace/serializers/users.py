@@ -30,6 +30,7 @@ import jwt
 
 class UserModelSerializer(serializers.ModelSerializer):
     profile = ProfileModelSerializer()
+    manufacturer = ManufacturerModelSerializer()
     class Meta:
         """Meta class."""
 
