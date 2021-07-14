@@ -26,7 +26,7 @@ from sunnysouth.taskapp.tasks import send_confirmation_email
 # Utilities
 import jwt
 
-#lib
+# Lib
 from sunnysouth.lib.validators import validate_password
 
 
