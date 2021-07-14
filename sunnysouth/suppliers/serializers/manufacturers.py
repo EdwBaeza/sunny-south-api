@@ -15,7 +15,7 @@ from sunnysouth.marketplace.serializers.addresses import AddressModelSerializer
 # Tasks
 from sunnysouth.taskapp.tasks import send_confirmation_email
 
-#lib
+# Lib
 from sunnysouth.lib.validators import validate_password
 
 class ManufacturerModelSerializer(serializers.ModelSerializer):
