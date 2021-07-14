@@ -4,7 +4,7 @@
 from django.db import models
 
 #utitlities
-from sunnysouth.utils.models import BaseModel
+from sunnysouth.lib.models import BaseModel
 
 
 class Purchase(BaseModel):

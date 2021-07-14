@@ -1,6 +1,5 @@
 # Django
 from django.conf import settings
-from django.contrib.auth import password_validation
 from django.db import transaction
 
 # Django REST Framework
@@ -10,7 +9,6 @@ from rest_framework.validators import UniqueValidator
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-
 # Models
 from sunnysouth.marketplace.models import (
     Profile,
@@ -19,6 +17,7 @@ from sunnysouth.marketplace.models import (
 
 # Serializers
 from sunnysouth.marketplace.serializers.profiles import ProfileModelSerializer
+from sunnysouth.marketplace.serializers.addresses import AddressModelSerializer
 from sunnysouth.suppliers.serializers.manufacturers import ManufacturerModelSerializer
 
 # Tasks
@@ -26,6 +25,9 @@ from sunnysouth.taskapp.tasks import send_confirmation_email
 
 # Utilities
 import jwt
+
+#lib
+from sunnysouth.lib.validators import validate_password
 
 
 class UserModelSerializer(serializers.ModelSerializer):
@@ -81,11 +83,8 @@ class UserSignUpSerializer(serializers.Serializer):
     profile = ProfileModelSerializer()
 
     def validate(self, data):
-        password = data['password']
-        password_confirmation = data['password_confirmation']
-        if password != password_confirmation:
-            raise serializers.ValidationError("Passwords don't match.")
-        password_validation.validate_password(password_confirmation)
+        validate_password(data)
+
         return data
 
     def create(self, data):

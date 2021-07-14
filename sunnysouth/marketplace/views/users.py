@@ -21,7 +21,6 @@ from sunnysouth.marketplace.serializers import (
     ProfileModelSerializer,
     MyTokenObtainPairSerializer
 )
-from sunnysouth.suppliers.serializers import UserModelSerializer as UserManufacturerModelSerializer
 
 # Models
 from sunnysouth.marketplace.models import User
@@ -32,6 +31,7 @@ class UserViewSet(mixins.RetrieveModelMixin,
                   mixins.ListModelMixin,
                   viewsets.GenericViewSet):
     queryset = User.objects.filter(is_active=True, is_verified=True)
+    serializer_class = UserModelSerializer
     lookup_field = 'username'
 
     def get_permissions(self):
@@ -58,11 +58,11 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response(UserModelSerializer(user).data)
+        return Response(UserModelSerializer(user).data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['get'])
     def me(self, request, *args, **kwargs):
-        return Response(UserModelSerializer(request.user).data)
+        return Response(UserModelSerializer(request.user).data, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
     def signup(self, request):

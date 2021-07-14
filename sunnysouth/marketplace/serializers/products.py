@@ -19,7 +19,6 @@ class ProductModelSerializer(serializers.ModelSerializer):
     supplier = serializers.SerializerMethodField()
     category = serializers.CharField(max_length=300)
 
-
     class Meta:
         model = Product
         exclude = ['id', 'is_active']

@@ -1,13 +1,14 @@
-#django rest_framework
-from django.db.models import query
-
+# Django Rest Framework
 from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+# Models
 from sunnysouth.marketplace.models import User
 
-from sunnysouth.suppliers.serializers import ManufacturerSignUpSerializer, UserModelSerializer
+# Serializers
+from sunnysouth.marketplace.serializers.users import UserModelSerializer
+from sunnysouth.suppliers.serializers import ManufacturerSignUpSerializer
 
 
 class ManufacturerViewSet(

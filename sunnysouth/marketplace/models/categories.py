@@ -3,7 +3,7 @@
 from django.db import models
 
 #utils
-from sunnysouth.utils.models import BaseModel
+from sunnysouth.lib.models import BaseModel
 
 class Category(BaseModel):
     """ Category Model"""

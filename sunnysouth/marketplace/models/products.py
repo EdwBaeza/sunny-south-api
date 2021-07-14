@@ -2,7 +2,7 @@
 from django.db import models
 
 #utitilties
-from sunnysouth.utils.models import BaseModel
+from sunnysouth.lib.models import BaseModel
 
 
 class Product(BaseModel):

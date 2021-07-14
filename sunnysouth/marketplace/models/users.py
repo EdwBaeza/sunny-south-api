@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 
 # Utilities
-from sunnysouth.utils.models import BaseModel
+from sunnysouth.lib.models import BaseModel
 
 
 class User(BaseModel, AbstractUser):

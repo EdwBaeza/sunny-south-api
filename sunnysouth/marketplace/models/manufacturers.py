@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericRelation
 
 # Utilities
-from sunnysouth.utils.models import BaseModel
+from sunnysouth.lib.models import BaseModel
 
 
 class Manufacturer(BaseModel):
@@ -27,6 +27,6 @@ class Manufacturer(BaseModel):
         'marketplace.Address',
         'addressable_object_id',
         'addressable_content_type',
-        related_query_name='manufacturers',
+        related_query_name='manufacturer',
     )
 

@@ -7,7 +7,7 @@ import django.core.validators
 from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
-import sunnysouth.utils.models
+import sunnysouth.lib.models
 
 
 class Migration(migrations.Migration):
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
                 ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('uuid', models.CharField(default=sunnysouth.utils.models.generate_uuid, max_length=300, unique=True)),
+                ('uuid', models.CharField(default=sunnysouth.lib.models.generate_uuid, max_length=300, unique=True)),
                 ('created', models.DateTimeField(auto_now_add=True, help_text='Date time on which the object was created.', verbose_name='created at')),
                 ('modified', models.DateTimeField(auto_now=True, help_text='Date time on which the object was last modified.', verbose_name='modified at')),
                 ('email', models.EmailField(error_messages={'unique': 'A user with that email already exists.'}, max_length=254, unique=True, verbose_name='email address')),
@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
             name='Category',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.CharField(default=sunnysouth.utils.models.generate_uuid, max_length=300, unique=True)),
+                ('uuid', models.CharField(default=sunnysouth.lib.models.generate_uuid, max_length=300, unique=True)),
                 ('created', models.DateTimeField(auto_now_add=True, help_text='Date time on which the object was created.', verbose_name='created at')),
                 ('modified', models.DateTimeField(auto_now=True, help_text='Date time on which the object was last modified.', verbose_name='modified at')),
                 ('name', models.CharField(max_length=100)),
@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
             name='Manufacturer',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.CharField(default=sunnysouth.utils.models.generate_uuid, max_length=300, unique=True)),
+                ('uuid', models.CharField(default=sunnysouth.lib.models.generate_uuid, max_length=300, unique=True)),
                 ('created', models.DateTimeField(auto_now_add=True, help_text='Date time on which the object was created.', verbose_name='created at')),
                 ('modified', models.DateTimeField(auto_now=True, help_text='Date time on which the object was last modified.', verbose_name='modified at')),
                 ('name', models.CharField(max_length=300)),
@@ -91,7 +91,7 @@ class Migration(migrations.Migration):
             name='Product',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.CharField(default=sunnysouth.utils.models.generate_uuid, max_length=300, unique=True)),
+                ('uuid', models.CharField(default=sunnysouth.lib.models.generate_uuid, max_length=300, unique=True)),
                 ('created', models.DateTimeField(auto_now_add=True, help_text='Date time on which the object was created.', verbose_name='created at')),
                 ('modified', models.DateTimeField(auto_now=True, help_text='Date time on which the object was last modified.', verbose_name='modified at')),
                 ('name', models.CharField(max_length=100)),
@@ -117,7 +117,7 @@ class Migration(migrations.Migration):
             name='Profile',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.CharField(default=sunnysouth.utils.models.generate_uuid, max_length=300, unique=True)),
+                ('uuid', models.CharField(default=sunnysouth.lib.models.generate_uuid, max_length=300, unique=True)),
                 ('created', models.DateTimeField(auto_now_add=True, help_text='Date time on which the object was created.', verbose_name='created at')),
                 ('modified', models.DateTimeField(auto_now=True, help_text='Date time on which the object was last modified.', verbose_name='modified at')),
                 ('slug_name', models.CharField(max_length=300, null=True)),
@@ -136,7 +136,7 @@ class Migration(migrations.Migration):
             name='Purchase',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.CharField(default=sunnysouth.utils.models.generate_uuid, max_length=300, unique=True)),
+                ('uuid', models.CharField(default=sunnysouth.lib.models.generate_uuid, max_length=300, unique=True)),
                 ('created', models.DateTimeField(auto_now_add=True, help_text='Date time on which the object was created.', verbose_name='created at')),
                 ('modified', models.DateTimeField(auto_now=True, help_text='Date time on which the object was last modified.', verbose_name='modified at')),
                 ('total_amount', models.FloatField()),
@@ -158,7 +158,7 @@ class Migration(migrations.Migration):
             name='PurchaseProduct',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.CharField(default=sunnysouth.utils.models.generate_uuid, max_length=300, unique=True)),
+                ('uuid', models.CharField(default=sunnysouth.lib.models.generate_uuid, max_length=300, unique=True)),
                 ('created', models.DateTimeField(auto_now_add=True, help_text='Date time on which the object was created.', verbose_name='created at')),
                 ('modified', models.DateTimeField(auto_now=True, help_text='Date time on which the object was last modified.', verbose_name='modified at')),
                 ('quantity', models.IntegerField()),
@@ -181,7 +181,7 @@ class Migration(migrations.Migration):
             name='Address',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('uuid', models.CharField(default=sunnysouth.utils.models.generate_uuid, max_length=300, unique=True)),
+                ('uuid', models.CharField(default=sunnysouth.lib.models.generate_uuid, max_length=300, unique=True)),
                 ('created', models.DateTimeField(auto_now_add=True, help_text='Date time on which the object was created.', verbose_name='created at')),
                 ('modified', models.DateTimeField(auto_now=True, help_text='Date time on which the object was last modified.', verbose_name='modified at')),
                 ('name', models.CharField(max_length=300)),
