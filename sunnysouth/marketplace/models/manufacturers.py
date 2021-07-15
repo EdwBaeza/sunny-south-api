@@ -17,7 +17,7 @@ class Manufacturer(BaseModel):
     biography = models.TextField(max_length=500, blank=True)
     status = models.CharField(
         max_length=100,
-        choices= ManufacturerStatus.choices,
+        choices=ManufacturerStatus.choices,
         default=ManufacturerStatus.PENDING
     )
     is_active = models.BooleanField('active', default=True)
@@ -29,4 +29,3 @@ class Manufacturer(BaseModel):
         'addressable_content_type',
         related_query_name='manufacturer',
     )
-

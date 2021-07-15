@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 # Models
-from sunnysouth.marketplace.models import(
+from sunnysouth.marketplace.models import (
     Category,
     Product,
     Purchase,

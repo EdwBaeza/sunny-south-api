@@ -16,9 +16,8 @@ from sunnysouth.marketplace.models import (
 )
 
 # Serializers
-from sunnysouth.marketplace.serializers.profiles import ProfileModelSerializer
-from sunnysouth.marketplace.serializers.addresses import AddressModelSerializer
-from sunnysouth.suppliers.serializers.manufacturers import ManufacturerModelSerializer
+from sunnysouth.marketplace.serializers import AddressModelSerializer
+from sunnysouth.suppliers.serializers import ManufacturerModelSerializer
 
 # Tasks
 from sunnysouth.taskapp.tasks import send_confirmation_email
@@ -28,6 +27,18 @@ import jwt
 
 # Lib
 from sunnysouth.lib.validators import validate_password
+
+
+class ProfileModelSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(
+        many=False,
+        read_only=True,
+        slug_field='uuid'
+     )
+    class Meta:
+        model = Profile
+        exclude = ['id']
+        read_only_fields = ['reputation', 'uuid']
 
 
 class UserModelSerializer(serializers.ModelSerializer):

@@ -5,8 +5,8 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework.reverse import reverse
 
-# Model
-from sunnysouth.marketplace.models import User
+# Models
+from sunnysouth.marketplace.models.users import User
 
 class UserAPITestCase(APITestCase):
     """ Users API test case. """

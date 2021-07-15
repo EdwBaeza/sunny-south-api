@@ -18,8 +18,10 @@ from sunnysouth.taskapp.tasks import send_confirmation_email
 # Lib
 from sunnysouth.lib.validators import validate_password
 
+
 class ManufacturerModelSerializer(serializers.ModelSerializer):
     addresses = AddressModelSerializer(many=True)
+
     class Meta:
         model = Manufacturer
         exclude = ['id']
@@ -72,7 +74,6 @@ class ManufacturerSignUpSerializer(serializers.Serializer):
         data.pop('password_confirmation')
         manufacturer_data = data.pop('manufacturer') or {}
         addresses_data = manufacturer_data.pop('addresses') or []
-
 
         user = User.objects.create(**data, is_verified=False)
         user.set_password(password)

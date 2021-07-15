@@ -1,9 +1,9 @@
 """ sales models."""
 
-#django
+# Django
 from django.db import models
 
-#utitlities
+# Lib
 from sunnysouth.lib.models import BaseModel
 
 

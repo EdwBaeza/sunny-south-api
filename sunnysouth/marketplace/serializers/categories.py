@@ -1,7 +1,7 @@
-#django
+# Django
 from rest_framework import serializers
 
-#models
+# Models
 from sunnysouth.marketplace.models import Category
 
 

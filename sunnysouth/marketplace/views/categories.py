@@ -1,12 +1,12 @@
-#rest_framework
+# Django Rest Framework
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-#models
-from sunnysouth.marketplace.models import Category
+# Models
+from sunnysouth.marketplace.models.categories import Category
 
-#serializers
-from sunnysouth.marketplace.serializers import CategoryModelSerializer
+# Serializers
+from sunnysouth.marketplace.serializers.categories import CategoryModelSerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]

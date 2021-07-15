@@ -23,8 +23,8 @@ from sunnysouth.marketplace.serializers import (
 )
 
 # Models
-from sunnysouth.marketplace.models import User
-from sunnysouth.marketplace.models import Product
+from sunnysouth.marketplace.models import User, Product
+
 
 class UserViewSet(mixins.RetrieveModelMixin,
                   mixins.UpdateModelMixin,

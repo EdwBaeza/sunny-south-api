@@ -1,10 +1,10 @@
 
-#Django
+# django
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
-#utilities
+# lib
 from sunnysouth.lib.models import BaseModel
 
 
@@ -17,6 +17,7 @@ class Address(BaseModel):
     longitude = models.CharField(max_length=100)
     reference = models.CharField(max_length=300)
     custom_address = models.CharField(max_length=500)
+    is_primary = models.BooleanField("primary", default=False)
     addressable_object_id = models.IntegerField()
     addressable_content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
-    addressable = GenericForeignKey('addressable_content_type', 'addressable_object_id')
+    addressable = GenericForeignKey("addressable_content_type", "addressable_object_id")

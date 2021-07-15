@@ -1,9 +1,9 @@
 """Order models."""
 
-#django
+# Django
 from django.db import models
 
-#utilities
+# Lib
 from sunnysouth.lib.models import BaseModel
 
 

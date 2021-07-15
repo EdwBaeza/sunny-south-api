@@ -1,11 +1,11 @@
 """Marketplace URLs"""
-#django
+# Django
 from django.urls import include, path
 
-#rest_framework
+# Django Rest Framework
 from rest_framework.routers import DefaultRouter
 
-#views
+# Views
 from .views import ProductViewSet
 from .views import CategoryViewSet
 from .views import UserViewSet

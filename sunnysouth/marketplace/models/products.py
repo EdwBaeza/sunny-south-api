@@ -1,7 +1,7 @@
-#Django
+# Django
 from django.db import models
 
-#utitilties
+# Lib
 from sunnysouth.lib.models import BaseModel
 
 
@@ -18,4 +18,3 @@ class Product(BaseModel):
     home_service_enabled = models.BooleanField(default=True)
     category = models.ForeignKey('marketplace.Category', on_delete=models.CASCADE)
     manufacturer = models.ForeignKey('marketplace.Manufacturer', on_delete=models.CASCADE, related_name='products')
-

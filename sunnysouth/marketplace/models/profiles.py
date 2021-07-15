@@ -1,9 +1,10 @@
 
-#Django
+# Django
 from django.db import models
 
-#utils
+# Lib
 from sunnysouth.lib.models import BaseModel
+
 
 class Profile(BaseModel):
     user = models.OneToOneField('marketplace.User', related_name='profile', on_delete=models.CASCADE)

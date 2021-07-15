@@ -1,24 +1,26 @@
-#django rest_framework
-from rest_framework import mixins, status, viewsets
-from rest_framework.decorators import action
+# Django Rest Framework
+from rest_framework import mixins, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 
-#serializers
-from sunnysouth.marketplace.serializers import ProductModelSerializer, ProductListSerializer, ProductDetailSerializer
-from sunnysouth.marketplace.serializers.categories import CategoryModelSerializer
+# Serializers
+from sunnysouth.marketplace.serializers import (
+    ProductModelSerializer,
+    ProductListSerializer,
+    ProductDetailSerializer
+)
 
-#filters
+# Filters
 from django_filters.rest_framework import DjangoFilterBackend
 
-#models
-from sunnysouth.marketplace.models import Product, Category
+# Models
+from sunnysouth.marketplace.models import Product
 from sunnysouth.marketplace.models import User
 
-#Permissions
+# Permissions
 from sunnysouth.marketplace.permissions.products import IsValidCurrentUser
+
 
 class ProductUserViewSet(
     mixins.CreateModelMixin,
@@ -27,7 +29,7 @@ class ProductUserViewSet(
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet
-    ):
+):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['name', 'price', 'supplier']
@@ -56,8 +58,8 @@ class ProductUserViewSet(
     def get_permissions(self):
         permissions = [IsAuthenticated]
         if self.action in ['update', 'partial_update', 'create', 'destroy']:
-            permissions+= [IsValidCurrentUser]
-        return [p() for p in permissions ]
+            permissions += [IsValidCurrentUser]
+        return [p() for p in permissions]
 
     def get_queryset(self):
         return Product.objects.filter(is_active=True, supplier=self.user.manufacturer)
@@ -74,17 +76,17 @@ class ProductUserViewSet(
 
         return context
 
+
 class ProductViewSet(
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     viewsets.GenericViewSet
-    ):
+):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['name', 'price', 'supplier']
     search_fields = ['category__name', 'category__uuid']
     queryset = Product.objects.filter(is_active=True)
     lookup_field = 'uuid'
-
 
     def get_serializer_class(self):
         """Get the serializer class depends on the action."""

@@ -1,9 +1,10 @@
 
-#django
+# Django
 from django.db import models
 
-#utils
+# Utils
 from sunnysouth.lib.models import BaseModel
+
 
 class Category(BaseModel):
     """ Category Model"""
