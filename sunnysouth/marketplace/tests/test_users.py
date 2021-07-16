@@ -67,7 +67,7 @@ class UserAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST, response.json())
 
     def test_login_response_success(self):
-        """ Try to login account and expected success responce. """
+        """ Try to login account and expected success response. """
         url = self.url + "token/"
         response = self.client.post(url, self.data_login, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())

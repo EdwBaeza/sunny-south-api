@@ -12,6 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: build docker stack
-      run: docker-compose -f local.yml build
+      run: docker-compose -f local.yml build --no-cache
     - name: Run Tests
       run: docker-compose -f local.yml run --rm django pytest
