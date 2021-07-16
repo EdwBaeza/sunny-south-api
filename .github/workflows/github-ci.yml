@@ -16,7 +16,6 @@ jobs:
         pwd
         ls -la
         ls -la sunnysouth
-
     - name: build docker stack
       run: docker-compose -f local.yml build
     - name: Run Tests
