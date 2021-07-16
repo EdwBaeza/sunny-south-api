@@ -11,10 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Verbose directories
+      run: |
+        pwd
+        ls -la
+        ls -la sunnysouth
+
     - name: build docker stack
-      run: pwd
-      run: ls -la
-      run: ls -la sunnysouth
       run: docker-compose -f local.yml build
     - name: Run Tests
       run: docker-compose -f local.yml run --rm django pytest
