@@ -4,8 +4,11 @@
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+# Models
+from sunnysouth.marketplace.models import Supplier
 
-class ManufacturerAPITestCase(APITestCase):
+
+class SupplierAPITestCase(APITestCase):
     """ Users API test case. """
 
     def setUp(self):
@@ -18,7 +21,7 @@ class ManufacturerAPITestCase(APITestCase):
             "phone_number": "9994169040",
             "password": "devtest02",
             "password_confirmation": "devtest02",
-            "manufacturer": {
+            "supplier": {
                 "name": "Test01",
                 "description": "Description 1,2,3,4",
                 "addresses": [
@@ -38,7 +41,8 @@ class ManufacturerAPITestCase(APITestCase):
         }
 
     def test_signup_response_success(self):
-        """ Create new manufacturer and expected successful response. """
+        """ Create new supplier and expected successful response. """
         url = self.url + "suppliers/signup/"
         response = self.client.post(url, self.supplier_attributes, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.json())
+        self.assertEqual(1, Supplier.objects.count())

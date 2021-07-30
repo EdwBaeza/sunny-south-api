@@ -1,10 +1,10 @@
 
-# django
+# Django
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
-# lib
+# Lib
 from sunnysouth.lib.models import BaseModel
 
 

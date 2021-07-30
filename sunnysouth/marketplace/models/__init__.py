@@ -5,4 +5,4 @@ from .purchase_products import PurchaseProduct
 from .products import Product
 from .categories import Category
 from .addresses import Address
-from .manufacturers import Manufacturer
+from .suppliers import Supplier

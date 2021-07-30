@@ -17,7 +17,7 @@ from sunnysouth.marketplace.models import (
 
 # Serializers
 from sunnysouth.marketplace.serializers import AddressModelSerializer
-from sunnysouth.suppliers.serializers import ManufacturerModelSerializer
+from sunnysouth.suppliers.serializers import SupplierModelSerializer
 
 # Tasks
 from sunnysouth.taskapp.tasks import send_confirmation_email
@@ -43,7 +43,7 @@ class ProfileModelSerializer(serializers.ModelSerializer):
 
 class UserModelSerializer(serializers.ModelSerializer):
     profile = ProfileModelSerializer()
-    manufacturer = ManufacturerModelSerializer()
+    supplier = SupplierModelSerializer()
     class Meta:
         """Meta class."""
 

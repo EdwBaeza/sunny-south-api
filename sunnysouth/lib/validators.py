@@ -1,4 +1,6 @@
 
+from typing import Dict
+
 # Django
 from django.contrib.auth import password_validation
 
@@ -6,7 +8,7 @@ from django.contrib.auth import password_validation
 from rest_framework import serializers
 
 
-def validate_password(data):
+def validate_password(data: Dict) -> None:
     """ Validate password from dict. """
     password = data['password']
     password_confirmation = data['password_confirmation']

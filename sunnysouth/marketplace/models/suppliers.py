@@ -7,8 +7,8 @@ from django.contrib.contenttypes.fields import GenericRelation
 from sunnysouth.lib.models import BaseModel
 
 
-class Manufacturer(BaseModel):
-    class ManufacturerStatus(models.TextChoices):
+class Supplier(BaseModel):
+    class SupplierStatus(models.TextChoices):
         PENDING = 'pending'
         REJECTED = 'rejected'
         APPROVED = 'approved'
@@ -17,15 +17,15 @@ class Manufacturer(BaseModel):
     biography = models.TextField(max_length=500, blank=True)
     status = models.CharField(
         max_length=100,
-        choices=ManufacturerStatus.choices,
-        default=ManufacturerStatus.PENDING
+        choices=SupplierStatus.choices,
+        default=SupplierStatus.PENDING
     )
     is_active = models.BooleanField('active', default=True)
     reputation = models.FloatField(default=5.0)
-    user = models.OneToOneField('marketplace.User', related_name='manufacturer', on_delete=models.CASCADE)
+    user = models.OneToOneField('marketplace.User', related_name='supplier', on_delete=models.CASCADE)
     addresses = GenericRelation(
         'marketplace.Address',
         'addressable_object_id',
         'addressable_content_type',
-        related_query_name='manufacturer',
+        related_query_name='supplier',
     )

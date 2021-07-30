@@ -12,7 +12,7 @@ from sunnysouth.marketplace.models import (
     PurchaseProduct,
     User,
     Profile,
-    Manufacturer
+    Supplier,
 )
 
 
@@ -30,4 +30,4 @@ admin.site.register(Category)
 admin.site.register(Product)
 admin.site.register(Purchase)
 admin.site.register(PurchaseProduct)
-admin.site.register(Manufacturer)
+admin.site.register(Supplier)

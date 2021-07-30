@@ -7,7 +7,6 @@ from sunnysouth.lib.models import BaseModel
 
 
 class Category(BaseModel):
-    """ Category Model"""
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
     picture = models.ImageField(

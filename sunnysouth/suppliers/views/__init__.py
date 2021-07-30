@@ -1,1 +1,2 @@
-from .manufacturers import ManufacturerViewSet
+from .suppliers import SupplierViewSet
+from .products import ProductViewSet

@@ -32,10 +32,6 @@ def gen_verification_token(user):
 @task(name='send_confirmation_email', max_retries=3)
 def send_confirmation_email(user_pk):
     """Send account verification link to given user."""
-    print('::::::::  send_confirmation_email ::::::::')
-    print(user_pk)
-    print([(us.id, us.email, us.created,) for us in  User.objects.all()])
-    print('::::::::  END ::::::::')
     user = User.objects.get(pk=user_pk)
     verification_token = gen_verification_token(user)
     subject = 'Welcome @{}! Verify your account to start using SunnySouth'.format(user.username)
@@ -47,7 +43,3 @@ def send_confirmation_email(user_pk):
     msg = EmailMultiAlternatives(subject, content, from_email, [user.email])
     msg.attach_alternative(content, "text/html")
     msg.send()
-
-# @periodic_task(name='test_periodic', run_every=timedelta(seconds=20))
-# def disable_finished_rides():
-#     print('::::: RUN PERIODIC TASK :::::')

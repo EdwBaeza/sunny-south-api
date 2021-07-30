@@ -1,1 +1,1 @@
-from .manufacturers import ManufacturerSignUpSerializer, ManufacturerModelSerializer, UserModelSerializer
+from .suppliers import SupplierSignUpSerializer, SupplierModelSerializer, UserModelSerializer

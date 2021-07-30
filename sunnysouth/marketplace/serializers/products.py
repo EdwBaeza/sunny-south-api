@@ -69,7 +69,7 @@ class ProductListSerializer(serializers.ModelSerializer):
     supplier = serializers.SlugRelatedField(
          many=False,
          read_only=True,
-         slug_field='slug_name'
+         slug_field='name'
     )
 
     class Meta:

@@ -1,5 +1,3 @@
-""" sales models."""
-
 # Django
 from django.db import models
 
@@ -20,5 +18,5 @@ class Purchase(BaseModel):
     canceled_at = models.DateTimeField(null=True)
     status = models.CharField(max_length=100, choices=PurchaseStatus.choices, default=PurchaseStatus.PENDING)
     client_ranking = models.FloatField(default=5.0)
-    manufacturer_ranking = models.FloatField(default=5.0)
-    client = models.ForeignKey('marketplace.Profile', on_delete=models.CASCADE)
+    supplier_ranking = models.FloatField(default=5.0)
+    client = models.ForeignKey('marketplace.User', on_delete=models.CASCADE)
