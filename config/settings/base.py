@@ -32,7 +32,7 @@ ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Users & Authentication
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'marketplace.User'
 
 # Apps
 DJANGO_APPS = [
@@ -51,8 +51,8 @@ THIRD_PARTY_APPS = [
     'corsheaders',
 ]
 LOCAL_APPS = [
-    'sunnysouth.users.apps.UsersAppConfig',
-    'sunnysouth.sales.apps.SalesAppConfig'
+    'sunnysouth.marketplace.apps.MarketplaceAppConfig',
+    'sunnysouth.suppliers.apps.SupplierAppConfig'
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
