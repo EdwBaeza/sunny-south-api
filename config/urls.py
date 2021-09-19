@@ -17,5 +17,6 @@ urlpatterns = [
     path('api/v1/', include(('sunnysouth.marketplace.urls', 'marketplace'), namespace='marketplace')),
     path('api/v1/', include(('sunnysouth.suppliers.urls', 'suppliers'), namespace='suppliers')),
     path('api/v1/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh')
+    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api-auth/', include('rest_framework.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -9,7 +9,7 @@ from rest_framework.routers import DefaultRouter
 from .views import ProductViewSet
 from .views import CategoryViewSet
 from .views import UserViewSet
-# from .views import ProductUserViewSet
+from .views import MeAPIView
 
 router = DefaultRouter()
 router.register(
@@ -23,12 +23,8 @@ router.register(
     basename='categories'
 )
 router.register(r'users', UserViewSet, basename='users')
-# router.register(
-#     r'users/(?P<username>[^/.]+)/products',
-#     ProductUserViewSet,
-#     basename='users-products'
-# )
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('users/me', MeAPIView.as_view(), name='users-me'),
 ]

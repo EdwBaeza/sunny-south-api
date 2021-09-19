@@ -19,8 +19,11 @@ from sunnysouth.marketplace.models import (
 class CustomUserAdmin(UserAdmin):
     """User model admin."""
 
-    list_display = ('email', 'username', 'first_name', 'last_name', 'is_staff', 'is_verified', 'password')
+    list_display = ('email', 'username', 'first_name', 'last_name', 'is_staff', 'is_active', 'is_verified', 'password')
     list_filter = ('is_staff', 'created', 'modified')
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('is_verified',)}),
+    )
 
 
 admin.site.register(User, CustomUserAdmin)
