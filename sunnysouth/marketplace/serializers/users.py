@@ -17,6 +17,7 @@ from sunnysouth.marketplace.models import (
 
 # Serializers
 from sunnysouth.marketplace.serializers import AddressModelSerializer
+from sunnysouth.marketplace.serializers.assets import AssetModelSerializer
 from sunnysouth.suppliers.serializers import SupplierModelSerializer
 
 # Tasks
@@ -35,18 +36,18 @@ class ProfileModelSerializer(serializers.ModelSerializer):
         read_only=True,
         slug_field='uuid'
      )
+    assets = AssetModelSerializer(many=True, read_only=True)
     class Meta:
         model = Profile
         exclude = ['id']
-        read_only_fields = ['reputation', 'uuid']
+        read_only_fields = ['id', 'reputation', 'uuid', 'assets']
 
 
 class UserModelSerializer(serializers.ModelSerializer):
-    profile = ProfileModelSerializer()
-    supplier = SupplierModelSerializer()
+    profile = ProfileModelSerializer(required=False)
+    supplier = SupplierModelSerializer(required=False)
     class Meta:
         """Meta class."""
-
         model = User
         exclude = [
             'id',
@@ -58,7 +59,7 @@ class UserModelSerializer(serializers.ModelSerializer):
             'groups',
             'user_permissions'
         ]
-        read_only_fields = ['username', 'email', 'uuid']
+        read_only_fields = ['id', 'username', 'email', 'uuid']
 
     def update(self, instance, data):
         profile_data = data.pop('profile', {})

@@ -1,1 +1,1 @@
-from .suppliers import SupplierService
+from .suppliers import SupplierCreateService

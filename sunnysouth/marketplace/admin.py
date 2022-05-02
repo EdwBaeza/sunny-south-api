@@ -13,6 +13,7 @@ from sunnysouth.marketplace.models import (
     User,
     Profile,
     Supplier,
+    Address
 )
 
 
@@ -34,3 +35,4 @@ admin.site.register(Product)
 admin.site.register(Purchase)
 admin.site.register(PurchaseProduct)
 admin.site.register(Supplier)
+admin.site.register(Address)

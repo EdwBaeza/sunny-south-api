@@ -36,11 +36,12 @@ class UserAPITestCase(APITestCase):
 
     def test_update_current_user(self):
         """ Update current user """
-        body = { "user": { "first_name": "new name" } }
+        body = { "first_name": "new name", "profile": { "biography": "Updated.." }}
         response = self.client.patch(self.url, body, format="json")
         json_response =  response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK, json_response)
-        self.assertEqual(json_response["first_name"], "new name", json_response)
+        self.assertEqual(json_response["first_name"], body['first_name'], json_response)
+        self.assertEqual(json_response['profile']['biography'], body['profile']['biography'], json_response)
 
     def test_update_invalid_current_user(self):
         """ Update invalid current user by he dont verified yet """

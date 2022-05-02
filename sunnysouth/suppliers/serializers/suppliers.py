@@ -13,7 +13,7 @@ from sunnysouth.marketplace.models import Supplier, User, Address
 from sunnysouth.marketplace.serializers.addresses import AddressModelSerializer
 
 # Services
-from sunnysouth.suppliers.services import SupplierService
+from sunnysouth.suppliers.services import SupplierCreateService
 
 # Lib
 from sunnysouth.lib.validators import validate_password
@@ -69,4 +69,4 @@ class SupplierSignUpSerializer(serializers.Serializer):
         return data
 
     def create(self, data):
-        return SupplierService.create(data)
+        return SupplierCreateService.create(data)

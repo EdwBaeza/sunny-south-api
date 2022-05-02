@@ -19,5 +19,5 @@ class Address(BaseModel):
     custom_address = models.CharField(max_length=500)
     is_primary = models.BooleanField("primary", default=False)
     addressable_object_id = models.IntegerField()
-    addressable_content_type = models.ForeignKey(ContentType, on_delete=models.PROTECT)
+    addressable_content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     addressable = GenericForeignKey("addressable_content_type", "addressable_object_id")

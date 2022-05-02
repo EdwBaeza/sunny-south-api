@@ -6,3 +6,4 @@ from .products import Product
 from .categories import Category
 from .addresses import Address
 from .suppliers import Supplier
+from .assets import Asset

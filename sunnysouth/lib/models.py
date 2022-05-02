@@ -38,8 +38,6 @@ class BaseModel(models.Model):
 
     class Meta:
         """Meta option."""
-
         abstract = True
-
         get_latest_by = 'created'
         ordering = ['-created', '-modified']

@@ -82,18 +82,17 @@ class MeAPIView(APIView):
     def get_object(self):
         user = self.request.user
         if user.is_active and user.is_verified:
-            return self.request.user
+            return user
 
         raise PermissionDenied(detail='Invalid user', code='invalid_user')
 
     def _update(self, request, partial=False):
         user = self.get_object()
-        data = request.data.get('user', {})
-        serializer = UserModelSerializer(user, data=data, partial=partial)
+        serializer = UserModelSerializer(user, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return serializer.data
+        return UserModelSerializer(user).data
 
 
 class MyTokenObtainPairView(TokenObtainPairView):

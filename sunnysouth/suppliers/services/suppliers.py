@@ -11,7 +11,7 @@ from sunnysouth.taskapp.tasks import send_confirmation_email
 from sunnysouth.marketplace.models import Supplier, User, Address
 
 
-class SupplierService():
+class SupplierCreateService():
 
     @staticmethod
     def create(params: Dict) -> Supplier:
@@ -25,7 +25,7 @@ class SupplierService():
         user.save()
         supplier = Supplier.objects.create(user=user, **supplier_data)
         for address_data in addresses_data:
-            Address.objects.create(**address_data, addressable= supplier)
+            Address.objects.create(**address_data, addressable=supplier)
 
         transaction.on_commit(lambda: send_confirmation_email.delay(user_pk=user.pk))
 
