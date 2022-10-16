@@ -8,12 +8,8 @@ from sunnysouth.marketplace.models.categories import Category
 # Serializers
 from sunnysouth.marketplace.serializers.categories import CategoryModelSerializer
 
-import time
 
 class CategoryViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     queryset = Category.objects.all()
     serializer_class = CategoryModelSerializer
-
-    # def dispatch(self, request, *args, **kwargs):
-    #     time.sleep(10.0)
-    #     return super(CategoryViewSet, self).dispatch(request, *args, **kwargs)

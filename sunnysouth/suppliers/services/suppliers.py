@@ -10,17 +10,17 @@ from sunnysouth.taskapp.tasks import send_confirmation_email
 # Models
 from sunnysouth.marketplace.models import Supplier, User, Address
 
+from sunnysouth.lib.services import Service
 
-class SupplierCreateService():
+class SupplierCreateService(Service):
 
-    @staticmethod
-    def create(params: Dict) -> Supplier:
-        password = params.pop('password')
-        params.pop('password_confirmation')
-        supplier_data = params.pop('supplier', {})
+    def run(self) -> Supplier:
+        password = self.params.pop('password')
+        self.params.pop('password_confirmation')
+        supplier_data = self.params.pop('supplier', {})
         addresses_data = supplier_data.pop('addresses', [])
 
-        user = User.objects.create(**params, is_verified=False)
+        user = User.objects.create(**self.params, is_verified=False)
         user.set_password(password)
         user.save()
         supplier = Supplier.objects.create(user=user, **supplier_data)

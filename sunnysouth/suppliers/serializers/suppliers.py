@@ -69,4 +69,4 @@ class SupplierSignUpSerializer(serializers.Serializer):
         return data
 
     def create(self, data):
-        return SupplierCreateService.create(data)
+        return SupplierCreateService.execute(params=data)

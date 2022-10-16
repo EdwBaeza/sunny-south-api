@@ -36,3 +36,4 @@ flower==0.9.7
 djangorestframework-simplejwt
 
 typed-ast==1.4.1
+

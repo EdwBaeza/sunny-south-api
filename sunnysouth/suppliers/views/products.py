@@ -29,11 +29,10 @@ class ProductViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet
 ):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['name', 'price']
     search_fields = ['category__name', 'category__uuid']
-    # queryset = Product.objects.filter(is_active=True)
     lookup_field = 'uuid'
 
     def dispatch(self, request, *args, **kwargs):
@@ -50,8 +49,6 @@ class ProductViewSet(
 
     def get_permissions(self):
         permissions = [IsAuthenticated]
-        # if self.action in ['update', 'partial_update', 'create', 'destroy']:
-        #     permissions += [IsValidCurrentUser]
         return [p() for p in permissions]
 
     def get_queryset(self):
